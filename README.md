@@ -1,7 +1,5 @@
-<h2 align="center"><b>Winnerwinnington/Rubim Profiles.</b>  
-
+<h2 align="center"><b>Winnerwinnington/Rubim Profiles.</b></h2> 
 <br/>
-
 <b>Notes about DK Blood</b>:  
 Death and Decay usage is wierd if you are using an Generic Unlocker, there's nothing i can do.
 
