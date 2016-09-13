@@ -37,7 +37,7 @@ local DeathStrikeHELL = {
 	{{ --Bonestorme
 		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" , "!toggle.bonestorm" }}, --DS to Heal
 		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" , "toggle.bonestorm" , "player.spell(194844).cooldown >= 2" }}, --DS to Heal
-		{ "49998" , { "player.runicpower >= 90" , "!toggle.194844" }}, --DS for RP Dump
+		{ "49998" , { "player.runicpower >= 90" , "!toggle.bonestorm" }}, --DS for RP Dump
 		{ "49998" , { "player.spell(194844).cooldown >= 2" , "player.runicpower >= 90" , "toggle.bonestorm" }}, --DS for RP Dump if 194844 is out of CD
 	}, "talent(7, 1)"},
 }
