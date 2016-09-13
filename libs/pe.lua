@@ -1,7 +1,7 @@
 --/dump NeP.DSL.Conditions['rpdeficiet']('player')
 --/dump NeP.DSL.Conditions['rprint']('Hi')
 --/dump NeP.DSL.Conditions['rubimarea']
---/dump NeP.DSL.Conditions['rubim.areattd']('player')
+--/dump NeP.DSL.Conditions['areattd']('player')
 --/dump NeP.DSL.Conditions['rubimarea.enemies']('player',8)
 NeP.DSL.RegisterConditon('rpdeficiet', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_RUNIC_POWER)) - (UnitPower(target, SPELL_POWER_RUNIC_POWER))
@@ -31,7 +31,7 @@ NeP.DSL.RegisterConditon("rubimarea.enemies", function(unit, distance)
 	return total
 end)
 
-NeP.DSL.RegisterConditon("rubim.areattd", function(target)
+NeP.DSL.RegisterConditon("areattd", function(target)
 	local ttd = 0
 	local total = 0
 	for i=1,#NeP.OM.unitEnemie do
@@ -43,9 +43,9 @@ NeP.DSL.RegisterConditon("rubim.areattd", function(target)
 			end
 		end
 	end
-	if ttd > 0 and (ttd/total) <= 10 then
-		return true
+	if ttd > 0 then
+		return ttd/total
 	else
-		return false
+		return 9999999999
 	end
 end)
