@@ -4,7 +4,8 @@ local exeOnLoad = function()
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rDeath Knight |cffC41F3BBlood |r")
 	print("|cffFFFF00 --- |rRecommended Talents: 1/2 - 2/1 - 3/1 - 4/2 - 5/1 - 6/3 - 7/1")
-	print("|cffFFFF00 --- |rDnD usage is not optimal. Read the Readme avaiable at github.")
+	print("|cffFFFF00 --- |rDnD usage is not optimal.")
+	print("|cffFFFF00 --- |rRead the Readme avaiable at github.")
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 
 	NeP.Interface.CreateToggle(
@@ -16,8 +17,8 @@ local exeOnLoad = function()
 	NeP.Interface.CreateToggle(
 		'bonestorm',
 		'Interface\\Icons\\Ability_deathknight_boneshield.png',
-		'Use Bonestorm',
-		'This will pool RP to use Bonestorm.')
+		'Use 194844',
+		'This will pool RP to use 194844.')
 	
 	NeP.Interface.CreateToggle(
 		'aoetaunt',
@@ -28,16 +29,16 @@ local exeOnLoad = function()
 end
 
 local DeathStrikeHELL = {
-	{ "Death Strike" , { "player.health <= 65" , "!toggle.saveDS" }}, --DS Emergency		
+	{ "49998" , { "player.health <= 65" , "!toggle.saveDS" }}, --DS Emergency		
 	{{ --Bonestormless
-		{ "Death Strike" , { "player.health <= 85" , "!toggle.saveDS" }}, --DS to Heal
-		{ "Death Strike" , "player.runicpower >= 90" }, --DS for RP Dump		
+		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" }}, --DS to Heal
+		{ "49998" , "player.runicpower >= 90" }, --DS for RP Dump		
 	}, "!talent(7, 1)"},
-	{{ --Bonestorm
-		{ "Death Strike" , { "player.health <= 85" , "!toggle.saveDS" , "!toggle.bonestorm" }}, --DS to Heal
-		{ "Death Strike" , { "player.health <= 85" , "!toggle.saveDS" , "toggle.bonestorm" , "player.spell(Bonestorm).cooldown >= 2" }}, --DS to Heal
-		{ "Death Strike" , { "player.runicpower >= 90" , "!toggle.bonestorm" }}, --DS for RP Dump
-		{ "Death Strike" , { "player.spell(Bonestorm).cooldown >= 2" , "player.runicpower >= 90" , "toggle.bonestorm" }}, --DS for RP Dump if Bonestorm is out of CD
+	{{ --Bonestorme
+		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" , "!toggle.bonestorm" }}, --DS to Heal
+		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" , "toggle.bonestorm" , "player.spell(194844).cooldown >= 2" }}, --DS to Heal
+		{ "49998" , { "player.runicpower >= 90" , "!toggle.194844" }}, --DS for RP Dump
+		{ "49998" , { "player.spell(194844).cooldown >= 2" , "player.runicpower >= 90" , "toggle.bonestorm" }}, --DS for RP Dump if 194844 is out of CD
 	}, "talent(7, 1)"},
 }
 
@@ -46,7 +47,7 @@ local Shared = {
 }
 
 local Survival = {
-	{ "Vampiric Blood" , { "player.runicpower >= 35" , "player.health <= 85" , "player.rubimarea(7).enemies >= 1" }}, --VP with enough RP for a DS
+	{ "55233" , { "player.runicpower >= 35" , "player.health <= 85" , "player.rubimarea(7).enemies >= 1" }}, --VP with enough RP for a DS
 }
 
 local Interrupts = {
@@ -59,19 +60,19 @@ local Cooldowns = {
 }
 
 local Burst = {
-	{"Marrowrend" , "player.buff(Bone Shield).count <= 2" },
+	{"195182" , "player.buff(Bone Shield).count <= 2" },
 	{{
-		{'Death Strike' , 'player.health <= 70' },
-		{'Death Strike' , 'player.runicpower >= 75'},
-		{'Blood Boil'},
-		{'Heart Strike' },	
+		{'49998' , 'player.health <= 70' },
+		{'49998' , 'player.runicpower >= 75'},
+		{'50842'},
+		{'206930' },	
 	}, 'player.rubimarea(7).enemies >= 2'},
 	
 	{{
-		{'Death Strike' , 'player.runicpower >= 75'},
-		{'Marrowrend'},
-		{'Death Strike'},
-		{'Blood Boil'},
+		{'49998' , 'player.runicpower >= 75'},
+		{'195182'},
+		{'49998'},
+		{'50842'},
 	}, 'player.rubimarea(7).enemies <= 1'},
 }
 
@@ -79,22 +80,19 @@ local Util = {
 	--AUTOTARGET
 	{ '@Rubim.Targeting()' , '!target.alive' },
 	{ "@Rubim.AoETaunt()" , "toggle.aoetaunt" },
-	--BOSS
-	{ '%pause' , 'player.debuff(200904)' },
-	{ '%pause' , 'player.debuff(Soul Saped)' },
 }
 
 local General = {
 	{{
-	{"Marrowrend" , "player.buff(Bone Shield).count <= 5" },
-	{"Heart Strike" , "player.buff(Bone Shield).count >= 6"},
-	{"Blood Boil" , { "player.spell(Blood Boil).charges >= 2" , "player.rubimarea(8).enemies >= 1" }},
+	{"195182" , "player.buff(Bone Shield).count <= 5" },
+	{"206930" , "player.buff(Bone Shield).count >= 6"},
+	{"50842" , { "player.spell(50842).charges >= 2" , "player.rubimarea(8).enemies >= 1" }},
 	}, "player.rubimarea(10).enemies <= 2" },
 	
 	{{
-	{"Marrowrend" , "player.buff(Bone Shield).count <= 2" },
-	{"Blood Boil" , "player.rubimarea(8).enemies >= 1"},
-	{"Heart Strike" },
+	{"195182" , "player.buff(195181).count <= 2" },
+	{"50842" , "player.rubimarea(8).enemies >= 1"},
+	{"206930" },
 	}, "player.rubimarea(10).enemies >= 3" },
 }
 
@@ -103,12 +101,12 @@ local inCombat = {
 	{ Util },
 	{ Interrupts, "target.interruptAt(10)" }, -- Interrupt when 40% into the cast time
 	{ Cooldowns , "player.rubimarea(8).enemies >= 1" },
-	{"Blood Boil", { "target.debuff(Blood Plague).duration < 1.5" , "player.rubimarea(8).enemies >= 1" }},
+	{"50842", { "target.debuff(55078).duration < 1.5" , "player.rubimarea(8).enemies >= 1" }},
 	{ Survival },
 	{ Burst , "player.areattd <= 5"},
-	{ "Bonestorm" , { "player.runicpower >= 90" , "toggle.bonestorm" , "player.areattd >= 10" }}, --Bonestorm with enough RP
+	{ "194844" , { "player.runicpower >= 90" , "toggle.bonestorm" , "player.areattd >= 10" }}, --194844 with enough RP
 	{ DeathStrikeHELL },
-	{ "Death and Decay"},
+	{ "43265"},
 	{ General },
 }
 
