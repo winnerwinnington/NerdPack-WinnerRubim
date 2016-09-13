@@ -1,0 +1,12 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+  <!-- Core Files -->
+  <Script file="libs\library.lua" />
+  <Script file="libs\pe.lua" />
+
+  <!-- Rotations -->
+  <Script file="rotations\dk\blood.lua" />
+  <Script file="rotations\dk\frost.lua" />
+  <Script file="rotations\dk\unh.lua" />  
+</Ui>
