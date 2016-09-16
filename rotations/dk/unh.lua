@@ -42,7 +42,6 @@ local Interrupts = {
 }
 
 local AoE = {
-	{ 'rprint(oi)' },
 --actions.aoe=death_and_decay,if=spell_targets.death_and_decay>=2
 	{'Death and Decay'},
 --actions.aoe+=/epidemic,if=spell_targets.epidemic>4
