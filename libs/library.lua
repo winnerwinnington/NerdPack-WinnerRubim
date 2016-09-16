@@ -1,6 +1,11 @@
 Rubim = {}
 NeP.library.register("Rubim", Rubim)
 
+
+function Rubim.Print(text)
+	print(text)
+	return false
+end
 -- UnitGUID("target") ~= UnitGuid(Obj.key)
 function Rubim.Targeting()
 	local exists = UnitExists("target")
@@ -40,18 +45,43 @@ function Rubim.AoETaunt()
 	end
 end
 
+--START DK
+--actions.generic+=/wait,sec=cooldown.apocalypse.remains,if=cooldown.apocalypse.remains<=1&cooldown.apocalypse.remains
+function Rubim.Paused()
+	if rubimapocalypse == false then
+		return false
+	elseif NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') > 0 then
+		rubimapocalypse = false
+		return true
+	end
+end
+
+function Rubim.ShouldPause()
+	if NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') <= 1 then
+		rubimapocalypse = true
+	end
+end
+
+
+
 function Rubim.AoEOutbreak()
 	local spell = "Outbreak"
 	local debuff = "Virulent Plague"
 	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	if cdtime == nil then cdtime = 0 end
+	
 	if spellCooldown > 0 then
 		return false
 	end
+	
+	if GetTime() - cdtime <= 1 then return false end
+	
 	for i=1,#NeP.OM['unitEnemie'] do
 		local Obj = NeP.OM['unitEnemie'][i]	
 		local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 		if not debuffDuration then debuffDuration = 0 end
-		if Obj.distance <= 30 and debuffDuration - GetTime() < 1.5 then
+		if Obj.distance <= 15 and debuffDuration - GetTime() < 1.5 and GetTime() - cdtime >= 1 and UnitHealth(Obj.key) > 100 and UnitAffectingCombat(Obj.key) == true then
+			cdtime = GetTime()
 			NeP.Engine.Cast_Queue(spell, Obj.key)
 			return true
 		end
