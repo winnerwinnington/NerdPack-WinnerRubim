@@ -1,6 +1,6 @@
 local exeOnLoad = function()
 --	NePCR.Splash()
---	meeleSpell = 49998
+	meeleSpell = 49998
 --	print("Meele Spell: ".. GetSpellInfo(meeleSpell) .. "(" .. meeleSpell .. ")")
 		NeP.Interface.CreateToggle(
 		'useDS',
@@ -196,10 +196,10 @@ local Generic = {
 }
 
 local inCombat = {
-	{ Healing , 'toggle.useDS' },
+	{ Healing , 'toggle(useDS)' },
 	{ 'Outbreak', '!target.debuff(Virulent Plague)' },
 	{ 'Dark Transformation' , 'player.runes <= 3' },
-	{ Valkyr , { '@Rubim.BattleMaidenUp()' , 'toggle.cooldowns' }},
+	{ Valkyr , { '@Rubim.BattleMaidenUp()' , 'toggle(cooldowns)' }},
 	{ Generic },
 }
 
