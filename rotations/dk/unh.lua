@@ -42,6 +42,7 @@ local Interrupts = {
 }
 
 local AoE = {
+	{ 'rprint(oi)' },
 --actions.aoe=death_and_decay,if=spell_targets.death_and_decay>=2
 	{'Death and Decay'},
 --actions.aoe+=/epidemic,if=spell_targets.epidemic>4
@@ -64,7 +65,7 @@ local Valkyr = {
 --actions.valkyr+=/festering_strike,if=debuff.festering_wound.stack<8&cooldown.apocalypse.remains<5
 	{ 'Festering Strike' , { 'target.debuff(Festering Wound).count < 8' , 'player.spell(Apocalypse).cooldown < 5' }},
 --actions.valkyr+=/call_action_list,name=aoe,if=active_enemies>=2
-	{ AoE , { 'player.rubimarea(7).enemies >= 2' , 'toggle(aoe)'}},
+	{ AoE , { 'player.rubimarea(7).enemies >= 2' , 'toggle.aoe'}},
 --actions.valkyr+=/festering_strike,if=debuff.festering_wound.stack<=3
 	{'Festering Strike', 'target.debuff(Festering Wound).count <= 3'},
 --actions.valkyr+=/scourge_strike,if=debuff.festering_wound.up
@@ -153,9 +154,9 @@ local Generic = {
 --Summon Pet
 	{'46584', '!pet.exists'},
 --actions.generic=dark_arbiter,if=!equipped.137075&runic_power.deficit<30
-	{ 'Dark Arbiter', {'!player.equipped(137075)', 'player.rpdeficiet < 30'}},
+	{ 'Dark Arbiter', {'!player.equipped(137075)', 'player.rpdeficiet < 30' , 'toggle(cooldowns)'}},
 --actions.generic+=/dark_arbiter,if=equipped.137075&runic_power.deficit<30&cooldown.dark_transformation.remains<2
-	{ 'Dark Arbiter', {'player.equipped(137075)', 'player.rpdeficiet < 30', 'player.spell(Dark Transformation).cooldown < 2'}},
+	{ 'Dark Arbiter', {'player.equipped(137075)', 'player.rpdeficiet < 30', 'player.spell(Dark Transformation).cooldown < 2' , 'toggle(cooldowns)' }},
 --actions.generic+=/summon_gargoyle,if=!equipped.137075,if=rune<=3
 	{'Summon Gargoyle', {'!player.equipped(137075)', 'player.runes <= 3'}},
 --actions.generic+=/summon_gargoyle,if=equipped.137075&cooldown.dark_transformation.remains<10&rune<=3
@@ -185,7 +186,7 @@ local Generic = {
 --actions.generic+=/defile
 	{'Defile'},
 --actions.generic+=/call_action_list,name=aoe,if=active_enemies>=2
-	{ AoE , { 'player.rubimarea(7).enemies >= 2' , 'toggle(aoe)'}},
+	{ AoE , { 'player.rubimarea(7).enemies >= 2' , 'toggle.aoe'}},
 --actions.generic+=/call_action_list,name=instructors,if=equipped.132448 *-Need the equipped function
 	{ Instructors , 'player.equipped(132448)'},
 --actions.generic+=/call_action_list,name=standard,if=!talent.castigator.enabled&!equipped.132448
@@ -198,7 +199,7 @@ local inCombat = {
 	{ Healing , 'toggle(useDS)' },
 	{ 'Outbreak', '!target.debuff(Virulent Plague)' },
 	{ 'Dark Transformation' , 'player.runes <= 3' },
-	{ Valkyr , { '@Rubim.BattleMaidenUp()' , 'toggle(cooldowns)' }},
+	{ Valkyr , { '@Rubim.BattleMaidenUp()' , }},
 	{ Generic },
 }
 
@@ -210,6 +211,6 @@ NeP.Engine.registerRotation(252, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP)
 		{'%pause', 'player.channeling'},
 		{Interrupts, 'target.interruptAt(15)'},
 		{Shared},
-		{AoE, {'toggle(aoe)', 'player.area(8).enemies >= 3'}},
+		{AoE, {'toggle(AoE)', 'player.area(8).enemies >= 3'}},
 		{inCombat}
 			}, outCombat, exeOnLoad)
