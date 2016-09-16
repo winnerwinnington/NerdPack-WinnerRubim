@@ -28,6 +28,9 @@ NeP.DSL.RegisterConditon("rubimarea.enemies", function(unit, distance)
 			end
 		end
 	end
+	if total == 0 and UnitExists('target') and UnitHealth('target') > 0 and IsSpellInRange(GetSpellInfo(meeleSpell), "target") == 1 then
+		total = 1
+	end
 	return total
 end)
 
