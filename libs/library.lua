@@ -5,7 +5,7 @@ local event = function()
 	if OneTimeRubim == nil then
 	rotype:SetWidth(240)
 	rotype:SetHeight(40)
-	rotype:SetPoint("TOP") -- Whats the chat anchor?
+	rotype:SetPoint("CENTER") -- Whats the chat anchor?
 	local tex = rotype:CreateTexture("BACKGROUND")
 	tex:SetAllPoints()
 	tex:SetTexture(0, 0, 0); tex:SetAlpha(0.5)
@@ -18,8 +18,6 @@ local event = function()
 	rottext:SetFont("Fonts\\FRIZQT__.TTF", 20)
 	rottext:SetShadowOffset(1, -1)
 	rottext:SetText("Hello")
-	
-	print('here')
 
 	rotype:SetScript("OnUpdate", function()
 	rottext:SetText("Rotation: " .. RotationText)
