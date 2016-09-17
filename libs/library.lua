@@ -1,9 +1,61 @@
+local RotationText = "none"
+local rotype = CreateFrame("Frame", "Rotation Indicator", UIParent)
+local rottext = rotype:CreateFontString("MyrotypeText", "OVERLAY")
+local event = function()
+	if OneTimeRubim == nil then
+	rotype:SetWidth(240)
+	rotype:SetHeight(40)
+	rotype:SetPoint("TOP") -- Whats the chat anchor?
+	local tex = rotype:CreateTexture("BACKGROUND")
+	tex:SetAllPoints()
+	tex:SetTexture(0, 0, 0); tex:SetAlpha(0.5)
+	OneTimeRubim = 1
+	end
+
+	rottext:SetFontObject(GameFontNormalSmall)
+	rottext:SetJustifyH("CENTER") -- 
+	rottext:SetPoint("CENTER", rotype, "CENTER", 0, 0) -- Text on center
+	rottext:SetFont("Fonts\\FRIZQT__.TTF", 20)
+	rottext:SetShadowOffset(1, -1)
+	rottext:SetText("Hello")
+	
+	print('here')
+
+	rotype:SetScript("OnUpdate", function()
+	rottext:SetText("Rotation: " .. RotationText)
+	end)
+   
+	rotype:SetMovable(true)
+	rotype:EnableMouse(true)
+	rotype:SetScript("OnMouseDown", function(self, button)
+	if button == "LeftButton" and not self.isMoving then
+		self:StartMoving();
+		self.isMoving = true;
+		end
+	end)
+	rotype:SetScript("OnMouseUp", function(self, button)
+	if button == "LeftButton" and self.isMoving then
+		self:StopMovingOrSizing();
+		self.isMoving = false;
+	end
+	end)
+	rotype:SetScript("OnHide", function(self)
+	if ( self.isMoving ) then
+		self:StopMovingOrSizing();
+		self.isMoving = false;
+	end
+	end)
+end
+
+rotype:SetScript("OnEvent", event)
+rotype:RegisterEvent("PLAYER_LOGIN")
+
 Rubim = {}
 NeP.library.register("Rubim", Rubim)
 
 
-function Rubim.Print(text)
-	print(text)
+function Rubim.SetText(text)
+	RotationText = text
 	return false
 end
 -- UnitGUID("target") ~= UnitGuid(Obj.key)
@@ -577,14 +629,6 @@ function Rubim.IcyTalons()
 	else
 		return false
 	end	
-end
-
-function Rubim.BattleMaidenUp()
-	if Rubim.CDCheck(207349) >= 165 then
-		return true
-	else
-		return false
-	end
 end
 
 function Rubim.SR()
