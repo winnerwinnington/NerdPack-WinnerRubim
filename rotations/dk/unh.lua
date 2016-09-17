@@ -42,8 +42,8 @@ local Interrupts = {
 }
 
 local AoE = {
+	{ "@Rubim.SetText('AoE')" },
 --actions.aoe=death_and_decay,if=spell_targets.death_and_decay>=2
-	{'Death and Decay'},
 --actions.aoe+=/epidemic,if=spell_targets.epidemic>4
 	{'Epidemic', 'player.area(8).enemies > 4'},
 --actions.aoe+=/scourge_strike,if=spell_targets.scourge_strike>=2&(dot.death_and_decay.ticking|dot.defile.ticking)
@@ -57,6 +57,7 @@ local AoE = {
 -- Winnerwinnington annotations are made with *- appended to the Simcraft notes
 
 local Valkyr = {
+	{ "@Rubim.SetText('Valkyr')" },
 --actions.valkyr=death_coil
 	{ 'Death Coil' },
 --actions.valkyr+=/apocalypse,if=debuff.festering_wound.stack=8
@@ -75,6 +76,7 @@ local Valkyr = {
 }
 
 local Standard = {
+	{ "@Rubim.SetText('Standard')" },
 --actions.standard=festering_strike,if=debuff.festering_wound.stack<=4&runic_power.deficit>23
 	{'Festering Strike', {'target.debuff(Festering Wound).count <= 4', 'player.rpdeficiet > 23'}},
 --actions.standard+=/death_coil,if=!buff.necrosis.up&talent.necrosis.enabled&rune<=3
@@ -102,6 +104,7 @@ local Standard = {
 }
 
 local Instructors = {
+	{ "@Rubim.SetText('Instructors')" },
 --actions.instructors=festering_strike,if=debuff.festering_wound.stack<=4&runic_power.deficit>23
 	{'Festering Strike', {'target.debuff(Festering Wound).count <= 4', 'player.rpdeficiet > 23'}},
 --actions.instructors+=/death_coil,if=!buff.necrosis.up&talent.necrosis.enabled&rune<=3
@@ -129,6 +132,7 @@ local Instructors = {
 }
 
 local Castigator = {
+	{ "@Rubim.SetText('Castigator')" },
 --actions.castigator=festering_strike,if=debuff.festering_wound.stack<=4&runic_power.deficit>23
 	{'Festering Strike', {'target.debuff(Festering Wound).count <= 4', 'player.rpdeficiet > 23'}},
 --actions.castigator+=/death_coil,if=!buff.necrosis.up&talent.necrosis.enabled&rune<=3
@@ -150,12 +154,13 @@ local Castigator = {
 }
 
 local Generic = {
+	{ "@Rubim.SetText('Generic')" },
 --Summon Pet
 	{'46584', '!pet.exists'},
 --actions.generic=dark_arbiter,if=!equipped.137075&runic_power.deficit<30
-	{ 'Dark Arbiter', {'!player.equipped(137075)', 'player.rpdeficiet < 30' , 'toggle(cooldowns)'}},
+	{ 'Dark Arbiter', {'!player.equipped(137075)', 'player.rpdeficiet < 30'}},
 --actions.generic+=/dark_arbiter,if=equipped.137075&runic_power.deficit<30&cooldown.dark_transformation.remains<2
-	{ 'Dark Arbiter', {'player.equipped(137075)', 'player.rpdeficiet < 30', 'player.spell(Dark Transformation).cooldown < 2' , 'toggle(cooldowns)' }},
+	{ 'Dark Arbiter', {'player.equipped(137075)', 'player.rpdeficiet < 30', 'player.spell(Dark Transformation).cooldown < 2'}},
 --actions.generic+=/summon_gargoyle,if=!equipped.137075,if=rune<=3
 	{'Summon Gargoyle', {'!player.equipped(137075)', 'player.runes <= 3'}},
 --actions.generic+=/summon_gargoyle,if=equipped.137075&cooldown.dark_transformation.remains<10&rune<=3
@@ -185,7 +190,7 @@ local Generic = {
 --actions.generic+=/defile
 	{'Defile'},
 --actions.generic+=/call_action_list,name=aoe,if=active_enemies>=2
-	{ AoE , { 'player.rubimarea(7).enemies >= 2' , 'toggle.aoe'}},
+	{ AoE , { 'player.rubimarea(7).enemies >= 2' , 'toggle(aoe)'}},
 --actions.generic+=/call_action_list,name=instructors,if=equipped.132448 *-Need the equipped function
 	{ Instructors , 'player.equipped(132448)'},
 --actions.generic+=/call_action_list,name=standard,if=!talent.castigator.enabled&!equipped.132448
@@ -195,14 +200,16 @@ local Generic = {
 }
 
 local inCombat = {
+	{ "@Rubim.SetText('inCombat')" },
 	{ Healing , 'toggle(useDS)' },
 	{ 'Outbreak', '!target.debuff(Virulent Plague)' },
 	{ 'Dark Transformation' , 'player.runes <= 3' },
-	{ Valkyr , { '@Rubim.BattleMaidenUp()' , }},
-	{ Generic },
+	{ Valkyr , 'player.spell(Dark Arbiter).cooldown > 165' },
+	{ Generic , 'player.spell(Dark Arbiter).cooldown <= 165' },
 }
 
 local outCombat = {
+	{ "@Rubim.SetText('Out of Combat')" },
 	{Shared}
 }
 
