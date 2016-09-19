@@ -1,6 +1,6 @@
 local exeOnLoad = function()
 --	NePCR.Splash()
---m	meeleSpell = 49998
+	meeleSpell = 49998
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rDeath Knight |cffC41F3BBlood |r")
 	print("|cffFFFF00 --- |rRecommended Talents: 1/2 - 2/1 - 3/1 - 4/2 - 5/1 - 6/3 - 7/1")
