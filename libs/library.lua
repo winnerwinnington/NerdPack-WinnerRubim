@@ -45,8 +45,9 @@ local event = function()
 	end)
 end
 
-rotype:SetScript("OnEvent", event)
-rotype:RegisterEvent("PLAYER_LOGIN")
+--THIS WAS NOT SUPPOSED TO BE ON LIVE, SORRY!
+--rotype:SetScript("OnEvent", event)
+--rotype:RegisterEvent("PLAYER_LOGIN")
 
 Rubim = {}
 NeP.library.register("Rubim", Rubim)
