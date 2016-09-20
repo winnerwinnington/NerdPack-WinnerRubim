@@ -1,6 +1,6 @@
 local exeOnLoad = function()
 --	NePCR.Splash()
-	meeleSpell = 49998
+--m	meeleSpell = 49998
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rDeath Knight |cffC41F3BBlood |r")
 	print("|cffFFFF00 --- |rRecommended Talents: 1/2 - 2/1 - 3/1 - 4/2 - 5/1 - 6/3 - 7/1")
@@ -29,16 +29,16 @@ local exeOnLoad = function()
 end
 
 local DeathStrikeHELL = {
-	{ "49998" , { "player.health <= 65" , "!toggle(saveDS)" }}, --DS Emergency		
+	{ "49998" , { "player.health <= 65" , "!toggle.saveDS" }}, --DS Emergency		
 	{{ --Bonestormless
-		{ "49998" , { "player.health <= 85" , "!toggle(saveDS)" }}, --DS to Heal
+		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" }}, --DS to Heal
 		{ "49998" , "player.runicpower >= 90" }, --DS for RP Dump		
 	}, "!talent(7, 1)"},
 	{{ --Bonestorme
-		{ "49998" , { "player.health <= 85" , "!toggle(saveDS)" , "!toggle(bonestorm)" }}, --DS to Heal
-		{ "49998" , { "player.health <= 85" , "!toggle(saveDS)" , "toggle(bonestorm)" , "player.spell(194844).cooldown >= 2" }}, --DS to Heal
-		{ "49998" , { "player.runicpower >= 90" , "!toggle(bonestorm)" }}, --DS for RP Dump
-		{ "49998" , { "player.spell(194844).cooldown >= 2" , "player.runicpower >= 90" , "toggle(bonestorm)" }}, --DS for RP Dump if 194844 is out of CD
+		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" , "!toggle.bonestorm" }}, --DS to Heal
+		{ "49998" , { "player.health <= 85" , "!toggle.saveDS" , "toggle.bonestorm" , "player.spell(194844).cooldown >= 2" }}, --DS to Heal
+		{ "49998" , { "player.runicpower >= 90" , "!toggle.bonestorm" }}, --DS for RP Dump
+		{ "49998" , { "player.spell(194844).cooldown >= 2" , "player.runicpower >= 90" , "toggle.bonestorm" }}, --DS for RP Dump if 194844 is out of CD
 	}, "talent(7, 1)"},
 }
 
@@ -79,7 +79,7 @@ local Burst = {
 local Util = {
 	--AUTOTARGET
 	{ '@Rubim.Targeting()' , '!target.alive' },
-	{ "@Rubim.AoETaunt()" , "toggle(aoetaunt)" },
+	{ "@Rubim.AoETaunt()" , "toggle.aoetaunt" },
 }
 
 local General = {
@@ -104,7 +104,7 @@ local inCombat = {
 	{"50842", { "target.debuff(55078).duration < 1.5" , "player.rubimarea(8).enemies >= 1" }},
 	{ Survival },
 	{ Burst , "player.areattd <= 5"},
-	{ "194844" , { "player.runicpower >= 90" , "toggle(bonestorm)" , "player.areattd >= 10" }}, --194844 with enough RP
+	{ "194844" , { "player.runicpower >= 90" , "toggle.bonestorm" , "player.rubimareattd >= 10" }}, --194844 with enough RP
 	{ DeathStrikeHELL },
 	{ "43265"},
 	{ General },
