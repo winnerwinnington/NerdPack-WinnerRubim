@@ -3,6 +3,10 @@
 --/dump NeP.DSL.Conditions['rubimarea']
 --/dump NeP.DSL.Conditions['areattd']('player')
 --/dump NeP.DSL.Conditions['rubimarea.enemies']('player',8)
+--/dump NeP.DSL.Conditions['spell.charges']('player','Blood Boil')
+--/dump NeP.DSL.Conditions['toggle']('cooldowns')
+--/dump NeP.DSL.Conditions['bmup']
+
 NeP.DSL.RegisterConditon('rpdeficiet', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_RUNIC_POWER)) - (UnitPower(target, SPELL_POWER_RUNIC_POWER))
 end)
@@ -27,9 +31,6 @@ NeP.DSL.RegisterConditon("rubimarea.enemies", function(unit, distance)
 				total = total +1
 			end
 		end
-	end
-	if total == 0 and UnitExists('target') and UnitHealth('target') > 0 and IsSpellInRange(GetSpellInfo(meeleSpell), "target") == 1 then
-		total = 1
 	end
 	return total
 end)

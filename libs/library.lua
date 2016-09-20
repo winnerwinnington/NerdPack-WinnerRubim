@@ -1,69 +1,13 @@
-local RotationText = "none"
-local rotype = CreateFrame("Frame", "Rotation Indicator", UIParent)
-local rottext = rotype:CreateFontString("MyrotypeText", "OVERLAY")
-local event = function()
-	if OneTimeRubim == nil then
-	rotype:SetWidth(240)
-	rotype:SetHeight(40)
-	rotype:SetPoint("CENTER") -- Whats the chat anchor?
-	local tex = rotype:CreateTexture("BACKGROUND")
-	tex:SetAllPoints()
-	tex:SetTexture(0, 0, 0); tex:SetAlpha(0.5)
-	OneTimeRubim = 1
-	end
-
-	rottext:SetFontObject(GameFontNormalSmall)
-	rottext:SetJustifyH("CENTER") -- 
-	rottext:SetPoint("CENTER", rotype, "CENTER", 0, 0) -- Text on center
-	rottext:SetFont("Fonts\\FRIZQT__.TTF", 20)
-	rottext:SetShadowOffset(1, -1)
-	rottext:SetText("Hello")
-
-	rotype:SetScript("OnUpdate", function()
-	rottext:SetText("Rotation: " .. RotationText)
-	end)
-   
-	rotype:SetMovable(true)
-	rotype:EnableMouse(true)
-	rotype:SetScript("OnMouseDown", function(self, button)
-	if button == "LeftButton" and not self.isMoving then
-		self:StartMoving();
-		self.isMoving = true;
-		end
-	end)
-	rotype:SetScript("OnMouseUp", function(self, button)
-	if button == "LeftButton" and self.isMoving then
-		self:StopMovingOrSizing();
-		self.isMoving = false;
-	end
-	end)
-	rotype:SetScript("OnHide", function(self)
-	if ( self.isMoving ) then
-		self:StopMovingOrSizing();
-		self.isMoving = false;
-	end
-	end)
-end
-
---THIS WAS NOT SUPPOSED TO BE ON LIVE, SORRY!
---rotype:SetScript("OnEvent", event)
---rotype:RegisterEvent("PLAYER_LOGIN")
-
 Rubim = {}
 NeP.library.register("Rubim", Rubim)
 
-
-function Rubim.SetText(text)
-	RotationText = text
-	return false
-end
 -- UnitGUID("target") ~= UnitGuid(Obj.key)
 function Rubim.Targeting()
 	local exists = UnitExists("target")
 	local hp = UnitHealth("target")
 	if exists == false or (exists == true and hp < 1) then
-		for i=1,#NeP.OM['unitEnemie'] do
-			local Obj = NeP.OM['unitEnemie'][i]	
+		for i=1,#NeP.OM.unitEnemie do
+			local Obj = NeP.OM.unitEnemie[i]	
 			if Obj.distance <= 10 then
 				RunMacroText("/tar " .. Obj.key)
 				return true
@@ -86,8 +30,8 @@ function Rubim.AoETaunt()
 	if spellCooldown > 0 then
 		return false
 	end
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for i=1,#NeP.OM.unitEnemie do
+		local Obj = NeP.OM.unitEnemie[i]	
 		local Threat = UnitThreatSituation("player", Obj.key)
 		if Threat ~= nil and Threat >= 0 and Threat < 3 and Obj.distance <= 30 then
 			NeP.Engine.Cast_Queue(spell, Obj.key)
@@ -96,43 +40,18 @@ function Rubim.AoETaunt()
 	end
 end
 
---START DK
---actions.generic+=/wait,sec=cooldown.apocalypse.remains,if=cooldown.apocalypse.remains<=1&cooldown.apocalypse.remains
-function Rubim.Paused()
-	if rubimapocalypse == false then
-		return false
-	elseif NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') > 0 then
-		rubimapocalypse = false
-		return true
-	end
-end
-
-function Rubim.ShouldPause()
-	if NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') <= 1 then
-		rubimapocalypse = true
-	end
-end
-
-
-
 function Rubim.AoEOutbreak()
 	local spell = "Outbreak"
 	local debuff = "Virulent Plague"
 	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
-	if cdtime == nil then cdtime = 0 end
-	
 	if spellCooldown > 0 then
 		return false
 	end
-	
-	if GetTime() - cdtime <= 1 then return false end
-	
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for i=1,#NeP.OM.unitEnemie do
+		local Obj = NeP.OM.unitEnemie[i]	
 		local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 		if not debuffDuration then debuffDuration = 0 end
-		if Obj.distance <= 15 and debuffDuration - GetTime() < 1.5 and GetTime() - cdtime >= 1 and UnitHealth(Obj.key) > 100 and UnitAffectingCombat(Obj.key) == true then
-			cdtime = GetTime()
+		if Obj.distance <= 30 and debuffDuration - GetTime() < 1.5 then
 			NeP.Engine.Cast_Queue(spell, Obj.key)
 			return true
 		end
@@ -167,8 +86,8 @@ end
 function Rubim.AreaTTD()
 	local ttd = 0
 	local total = 0
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for i=1,#NeP.OM.unitEnemie do
+		local Obj = NeP.OM.unitEnemie[i]	
 		if Obj.distance <= 6 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
 			if NeP.DSL.Conditions["deathin"](Obj.key) < 8 then
 				total = total+1
@@ -187,8 +106,8 @@ function Rubim.AoEMissingDebuff(spell, debuff, range)
 	if spell == nil or range == nil or NeP.DSL.Conditions['spell.cooldown']("player", 61304) ~= 0 then return false end
 	local spell = select(1,GetSpellInfo(spell))
 	if not IsUsableSpell(spell) then return false end
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for i=1,#NeP.OM.unitEnemie do
+		local Obj = NeP.OM.unitEnemie[i]	
 		if Obj.distance <= range and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 1.5 then
@@ -205,8 +124,8 @@ end
 function Rubim.soulGorge()
 	local debuff = 'Blood Plague'
 	if NeP.DSL.Conditions['spell.cooldown']("player", 61304) ~= 0 then return false end
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for i=1,#NeP.OM.unitEnemie do
+		local Obj = NeP.OM.unitEnemie[i]	
 		if Obj.distance <= 30 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 			if not debuffDuration then debuffDuration = 0 end
@@ -221,8 +140,8 @@ function Rubim.MoonfireAOE()
 	local Spell = "Moonfire"
 	if not IsUsableSpell(Spell) then return false end
 	
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for i=1,#NeP.OM.unitEnemie do
+		local Obj = NeP.OM.unitEnemie[i]	
 		if Obj.distance <= 5 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, Spell, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 3 then
@@ -628,6 +547,14 @@ function Rubim.IcyTalons()
 	else
 		return false
 	end	
+end
+
+function Rubim.BattleMaidenUp()
+	if Rubim.CDCheck(207349) >= 165 then
+		return true
+	else
+		return false
+	end
 end
 
 function Rubim.SR()
