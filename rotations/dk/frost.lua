@@ -1,10 +1,15 @@
 local exeOnLoad = function()
 	meeleSpell = 49998
 	print('Meele Spell: '.. GetSpellInfo(meeleSpell) .. '(' .. meeleSpell .. ')')
+	NeP.Interface.CreateToggle(
+		'useDS',
+		'Interface\\Icons\\spell_deathknight_butcher2.png',
+		'Use Dark Succor',
+		'Using Dark Scuccor ot heal.')
 end
 
 local Shared = {
-	{'@Rubim.CastGroundSpell()'},
+	--Dont know
 }
 
 local Healing = {
@@ -27,7 +32,7 @@ local Interrupts = {
 	{ '47528' },
 }
 
-local Core {
+local Core = {
 	--actions.core=glacial_advance
 	{ 'Glacial Advance' , 'player.rubimarea(8).enemies >= 1' },
 	--actions.core+=/frost_strike,if=buff.obliteration.up&!buff.killing_machine.react
@@ -43,7 +48,7 @@ local Core {
 	--actions.core+=/howling_blast,if=talent.frozen_pulse.enabled
 }
 
-local Generic {
+local Generic = {
 	--actions.generic=howling_blast,target_if=!dot.frost_fever.ticking
 	{ 'Howling Blast' , 'player.buff(Rime)' },
 	--actions.generic+=/howling_blast,if=buff.rime.react
@@ -54,7 +59,7 @@ local Generic {
 	{ Core },
 --actions.generic+=/horn_of_winter,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.remains>15
 --actions.generic+=/horn_of_winter,if=!talent.breath_of_sindragosa.enabled
-	{ 'Horn of Winter' , '!talent(7, 1)' },
+	{ 'Horn of Winter' , { '!talent(7, 1)' , 'player.runes <= 2' }},
 --actions.generic+=/frost_strike,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.remains>15
 	--actions.generic+=/frost_strike,if=!talent.breath_of_sindragosa.enabled
 	{ 'Frost Strike' , '!talent(7, 2)' },
@@ -65,10 +70,11 @@ local Generic {
 }
 
 local inCombat = {
-	{ Healing },
+	{ '@Rubim.Targeting()' , '!target.alive' },
+	{ Healing , 'toggle(useDS)' },
 --actions+=/arcane_torrent,if=runic_power.deficit>20
 	--actions+=/blood_fury,if=!talent.breath_of_sindragosa.enabled|dot.breath_of_sindragosa.ticking
-	{ 'Blood Fury' , '!talent(7, 2)'},
+	{ 'Blood Fury' , { '!talent(7, 2)' , 'player.rubimarea(8).enemies >= 1' }},
 --actions+=/berserking
 --actions+=/use_item,slot=finger2
 --actions+=/use_item,slot=trinket1
