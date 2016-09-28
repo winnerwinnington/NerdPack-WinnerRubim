@@ -60,7 +60,7 @@ local DeathStrikeHELL = {
 
 local Shared = {
 --	{ "@Rubim.SetText('OOC')" },
---	{'@Rubim.CastGroundSpell()'},
+	{'@Rubim.CastGroundSpell()'},
 }
 
 local Survival = {
