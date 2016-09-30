@@ -9,4 +9,8 @@
   <Script file="rotations\dk\blood.lua" />
   <Script file="rotations\dk\frost.lua" />
   <Script file="rotations\dk\unh.lua" />  
+  
+  <Script file="rotations\rogue\ass.lua" />  
+  <Script file="rotations\rogue\sub.lua" />  
+  <Script file="rotations\rogue\out.lua" />  
 </Ui>
