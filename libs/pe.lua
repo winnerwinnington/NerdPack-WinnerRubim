@@ -11,6 +11,14 @@ NeP.DSL.RegisterConditon('rpdeficiet', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_RUNIC_POWER)) - (UnitPower(target, SPELL_POWER_RUNIC_POWER))
 end)
 
+NeP.DSL.RegisterConditon('energydeficiet', function(target)
+	return (UnitPowerMax(target, SPELL_POWER_ENERGY)) - (UnitPower(target, SPELL_POWER_ENERGY))
+end)
+
+NeP.DSL.RegisterConditon('combodeficiet', function(target)
+	return (UnitPowerMax(target, SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, SPELL_POWER_COMBO_POINTS))
+end)
+
 NeP.DSL.RegisterConditon('equipped', function(target, item)
 	if IsEquippedItem(item) == true then return true else return false end
 end)
