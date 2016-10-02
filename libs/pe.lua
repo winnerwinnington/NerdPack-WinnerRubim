@@ -7,15 +7,15 @@
 --/dump NeP.DSL.Conditions['toggle']('cooldowns')
 --/dump NeP.DSL.Conditions['bmup']
 
-NeP.DSL.RegisterConditon('rpdeficiet', function(target)
+NeP.DSL.RegisterConditon('rpdeficit', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_RUNIC_POWER)) - (UnitPower(target, SPELL_POWER_RUNIC_POWER))
 end)
 
-NeP.DSL.RegisterConditon('energydeficiet', function(target)
+NeP.DSL.RegisterConditon('energydeficit', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_ENERGY)) - (UnitPower(target, SPELL_POWER_ENERGY))
 end)
 
-NeP.DSL.RegisterConditon('combodeficiet', function(target)
+NeP.DSL.RegisterConditon('combodeficit', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, SPELL_POWER_COMBO_POINTS))
 end)
 
