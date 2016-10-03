@@ -1,10 +1,9 @@
 local exeOnLoad = function()
 --	NePCR.Splash()
-	meeleSpell = 49998
+	meeleSpell = 193315
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
-	print("|cffFFFF00 --- |rCLASS NAME|cffC41F3BSPEC |r")
-	print("|cffFFFF00 --- |rRecommended Talents: 1/2 - 2/1 - 3/1 - 4/2 - 5/1 - 6/3 - 7/1")
-	print("|cffFFFF00 --- |rDnD usage is not optimal.")
+	print("|cffFFFF00 --- |rCLASS NAME|cffC41F3BOutlaw |r")
+	print("|cffFFFF00 --- |rRecommended Talents: 1/1 - 2/3 - 3/1 - 4/0 - 5/1 - 6/2 - 7/2")
 	print("|cffFFFF00 --- |rRead the Readme avaiable at github.")
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 
@@ -28,29 +27,97 @@ local exeOnLoad = function()
 	
 end
 
+local Interrupts = {
+	{'Kick'},	
+}
+
+local build = {
+	{ "@Rubim.SetText('Builders')" },
+--# Builders
+--actions.build=ghostly_strike,if=combo_points.deficit>=1+buff.broadsides.up&!buff.curse_of_the_dreadblades.up&(debuff.ghostly_strike.remains<debuff.ghostly_strike.duration*0.3|(cooldown.curse_of_the_dreadblades.remains<3&debuff.ghostly_strike.remains<14))&(combo_points>=3|(variable.rtb_reroll&time>=10))
+--	{'Ghostly Strike', {'player.buff(Broadsides)', '!player.buff(Curse of the Dreadblades)', 'target.debuff(Ghostly Strike).duration < 2'}},
+--	{'Ghostly Strike', {'player.spell(Curse of the Dreadblades).cooldown > 1', 'player.combodeficit >= 1',  'target.debuff{Ghostly Strike).duration < 2'}},
+	{'Ghostly Strike', {'player.combodeficit >= 1',  'target.debuff(Ghostly Strike).duration < 2'}},
+--actions.build+=/pistol_shot,if=combo_points.deficit>=1+buff.broadsides.up&buff.opportunity.up&energy.time_to_max>2-talent.quick_draw.enabled
+	{'Pistol Shot', {'player.buff(Opportunity)', 'player.combodeficit >= 1' }},	
+--actions.build+=/saber_slash,if=variable.ss_useable
+	{'Saber Slash', {'player.energy >= 50', 'player.combopoints < 5'}},
+	{'Saber Slash', {'player.energy >= 50', 'player.combopoints < 5'}},
+}
+
+local finish = {
+	{ "@Rubim.SetText('Finshers')" },
+--# Finishers
+--actions.finish=between_the_eyes,if=equipped.greenskins_waterlogged_wristcuffs&buff.shark_infested_waters.up
+	{'Between the Eyes', {'player.combopoints >= 5', 'player.buff(Shark Infested Waters)'}},
+--actions.finish+=/run_through,if=!talent.death_from_above.enabled|energy.time_to_max<cooldown.death_from_above.remains+3.5
+	{'Run Through', {'player.combopoints >= 5', '!player.talent(7,3)'}},
+	{'Run Through', {'player.combopoints >= 5', 'player.talent(7,3)'}},
+}
+
+local bf = {
+	{ "@Rubim.SetText('Bladeflurry')" },
+--# Blade Flurry
+--actions.bf=cancel_buff,name=blade_flurry,if=equipped.shivarran_symmetry&cooldown.blade_flurry.up&buff.blade_flurry.up&spell_targets.blade_flurry>=2|spell_targets.blade_flurry<2&buff.blade_flurry.up
+--	{'Blade Flurry', {'player.equipped()', 'player.rubimarea(7).enemies >= 2'}},
+--actions.bf+=/blade_flurry,if=spell_targets.blade_flurry>=2&!buff.blade_flurry.up
+	{'Blade Flurry', {'player.rubimarea(7).enemies > 3', '!player.buff(Blade Flurry)'}},
+	{'Blade Flurry', {'player.buff(Blade Flurry)', 'player.rubimarea(7).enemies < 2'}},
+}
+
+local cds = {
+	{ "@Rubim.SetText('Cooldowns')" },
+--# Cooldowns
+--actions.cds=potion,name=old_war,if=buff.bloodlust.react|target.time_to_die<=25|buff.adrenaline_rush.up
+--actions.cds+=/use_item,slot=trinket2,if=buff.bloodlust.react|target.time_to_die<=20|combo_points.deficit<=2
+--actions.cds+=/blood_fury
+--actions.cds+=/berserking
+--actions.cds+=/arcane_torrent,if=energy.deficit>40
+--actions.cds+=/cannonball_barrage,if=spell_targets.cannonball_barrage>=1
+	{'Cannonball Barrage', 'player.rubimarea(7).enemies <= 2'},
+--actions.cds+=/adrenaline_rush,if=!buff.adrenaline_rush.up&energy.deficit>0
+	{'Adrenaline Rush', 'player.energydeficit > 0'},
+--actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit|((raid_event.adds.in>40|buff.true_bearing.remains>15)&combo_points.deficit>=4+talent.deeper_strategem.enabled+talent.anticipation.enabled)
+	{'Marked for Death', {'target.ttd > 5', 'player.combodeficit <= 5', 'player.energy >= 20'}},
+--actions.cds+=/sprint,if=equipped.thraxis_tricksy_treads&!variable.ss_useable
+--actions.cds+=/curse_of_the_dreadblades,if=combo_points.deficit>=4&(!talent.ghostly_strike.enabled|debuff.ghostly_strike.up)
+	{'Curse of the Dreadblades', {'player.combodeficit >= 4', 'target.debuff(Ghostly Strike)'}},
+
+}
 
 local inCombat = {
-	{ "43265" ,{'keybind(lalt)' , 'keybind(lshift)'}},
-	{ Util },
-	{ Interrupts, "target.interruptAt(10)" }, -- Interrupt when 40% into the cast time
-	{ Cooldowns , "player.rubimarea(8).enemies >= 1" },
-	{"Blood Boil", { "target.debuff(Blood Plague).duration < 1.5" , "player.area(8).enemies >= 1" }},
-	{"Blood Boil" , { "player.buff(Dancing Rune Weapon).duration > 0" ,  "player.buff(Dancing Rune Weapon).duration < 3"}},
-	{"Blood Boil" , { "player.spell(Blood Boil).charges >= 1.8" , "player.area(8).enemies >= 1" }},
-	{ Survival },
-	{ "194844" , { "player.runicpower >= 90" , "toggle(bonestorm)" , "player.areattd >= 10" }}, --194844 with enough RP
-	{ Burst , "player.blood.rotation(burst)" },
-	{ DRW , "player.blood.rotation(drw)" },
-	{ DPS , "player.blood.rotation(dps)" },
-	{ General },
+	{ "@Rubim.SetText('Generic')" },
+--variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&(rtb_buffs<=1&!rtb_list.any.6&((!buff.curse_of_the_dreadblades.up&!buff.adrenaline_rush.up)|!rtb_list.any.5))
+--***WORKS	{'Roll the Bones', {'!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or','!player.talent(7,1)', 'player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)' }},
+	--{'Roll the Bones', {'player.spell(Curse of the Dreadblades', '!player.buff(Broadsides)'}},
+	{'Roll the Bones', {'!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or','!player.talent(7,1)', 'player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or','!player.talent(7,1)', '!player.buff(Broadsides)', 'player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', 'player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', 'player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', 'player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', 'player.buff(Buried Treasure)' }},
+--variable,name=ss_useable_noreroll,value=(combo_points<5+talent.deeper_stratagem.enabled-(buff.broadsides.up|buff.jolly_roger.up)-(talent.alacrity.enabled&buff.alacrity.stack<=4))
+--variable,name=ss_useable,value=(talent.anticipation.enabled&combo_points<4)|(!talent.anticipation.enabled&((variable.rtb_reroll&combo_points<4+talent.deeper_stratagem.enabled)|(!variable.rtb_reroll&variable.ss_useable_noreroll)))
+--call_action_list,name=bf
+	{ bf },
+--call_action_list,name=cds
+	{ cds },
+--call_action_list,name=stealth,if=stealthed|cooldown.vanish.up|cooldown.shadowmeld.up
+--death_from_above,if=energy.time_to_max>2&!variable.ss_useable_noreroll
+--slice_and_dice,if=!variable.ss_useable&buff.slice_and_dice.remains<target.time_to_die&buff.slice_and_dice.remains<(1+combo_points)*1.8
+--roll_the_bones,if=!variable.ss_useable&buff.roll_the_bones.remains<target.time_to_die&(buff.roll_the_bones.remains<=3|variable.rtb_reroll)
+--killing_spree,if=energy.time_to_max>5|energy<15
+--call_action_list,name=build
+	{ build },
+--call_action_list,name=finish,if=!variable.ss_useable
+	{ finish },
+--gouge,if=talent.dirty_tricks.enabled&combo_points.deficit>=1
+
+
 }
 
 local outCombat = {
 	{Shared}
 }
 
-NeP.Engine.registerRotation(260, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Deathknight - Blood', {
+NeP.Engine.registerRotation(260, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Rogue - Outlaw', {
 		{'%pause', 'player.channeling'},
 		{Shared},
+		{Interrupts, 'target.interruptAt(24)'},
 		{inCombat}
 	}, outCombat, exeOnLoad)
