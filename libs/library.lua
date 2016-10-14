@@ -227,8 +227,8 @@ function Rubim.AoEMissingDebuff(spell, debuff, range)
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 1.5 then
 --				print(Obj.name)
-				if UnitCanAttack('player', Obj.key)	and NeP.Engine.Infront('player', Obj.key) then		
-					NeP.Engine.Cast_Queue(spell, Obj.key)
+				if UnitCanAttack('player', Obj.key)	and NeP.Protected.Infront('player', Obj.key) then		
+					NeP:Queue(spell, Obj.key)
 					return true
 				end
 			end
@@ -259,7 +259,7 @@ function Rubim.MoonfireAOE()
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, Spell, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 3 then
 --				print(Obj.name)
-				if UnitCanAttack('player', Obj.key)	and NeP.Engine.Infront('player', Obj.key) and IsSpellInRange(Spell, Obj.key) then		
+				if UnitCanAttack('player', Obj.key)	and NeP.Protected.Infront('player', Obj.key) and IsSpellInRange(Spell, Obj.key) then		
 					NeP.Protected.Cast(Spell, Obj.key)
 					return true
 				end
@@ -481,12 +481,12 @@ function Rubim.GroundSpell(spell)
 		CastSpellByName(spell)
 	else
 		CastSpellByName(spell)
-		NeP.Engine.Cast_Queue(spell)
+		NeP:Queue(spell)
 	end
 end
 
 function Rubim.QueuedSpell(spell)
-	NeP.Engine.Cast_Queue(spell)     
+	NeP:Queue(spell)     
 end
 
 function Rubim.IG()
