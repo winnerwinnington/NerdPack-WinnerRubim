@@ -1,6 +1,6 @@
 local exeOnLoad = function()
 --	NePCR.Splash()
-	meeleSpell = 193315
+	Rubim.meeleSpell = 193315
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rCLASS NAME|cffC41F3BOutlaw |r")
 	print("|cffFFFF00 --- |rRecommended Talents: 1/1 - 2/3 - 3/1 - 4/0 - 5/1 - 6/2 - 7/2")

@@ -312,13 +312,13 @@ end
 
 function Rubim.AoERange()
 	if CheckInteractDistance("target", 3) == true
-	or SpellRange(meeleSpell) == true
+	or SpellRange(Rubim.meeleSpell) == true
 	then return true else return false
 	end
 end
 
 function Rubim.MeeleRange()
-	if SpellRange(meeleSpell) == true
+	if SpellRange(Rubim.meeleSpell) == true
 	then return true else return false
 	end
 end
