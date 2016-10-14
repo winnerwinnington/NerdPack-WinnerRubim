@@ -9,21 +9,21 @@ local exeOnLoad = function()
 	print("|cffFFFF00 --- |rRead the Readme avaiable at github.")
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 
-	NeP.DSL:AddToggle({
+	NeP.Interface:AddToggle({
 		key = 'saveDS',
 		icon = 'Interface\\Icons\\spell_deathknight_butcher2.png',
 		name = 'Save Death Strike',
 		text = 'BOT will Only Death Strike when RP is Capped, useful on fights were you need to cast an active mitigation.'
 	})
 		
-	NeP.DSL:AddToggle({
+	NeP.Interface:AddToggle({
 		key = 'bonestorm',
 		icon = 'Interface\\Icons\\Ability_deathknight_boneshield.png',
 		name = 'Use 194844',
 		text = 'This will pool RP to use 194844.'
 	})
 	
-	NeP.DSL:AddToggle({
+	NeP.Interface:AddToggle({
 		key = 'aoetaunt',
 		icon = 'Interface\\Icons\\spell_nature_shamanrage.png',
 		name = 'Aoe Taunt',

@@ -3,7 +3,7 @@ local _, Rubim = ...
 local exeOnLoad = function()
 	Rubim.meeleSpell = 49998
 	print('Meele Spell: '.. GetSpellInfo(Rubim.meeleSpell) .. '(' .. Rubim.meeleSpell .. ')')
-	NeP.DSL:AddToggle({
+	NeP.Interface:AddToggle({
 		key = 'useDS',
 		icon = 'Interface\\Icons\\spell_deathknight_butcher2.png',
 		name = 'Use Dark Succor',
