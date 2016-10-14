@@ -7,27 +7,27 @@
 --/dump NeP.DSL.Conditions['toggle']('cooldowns')
 --/dump NeP.DSL.Conditions['bmup']
 
-NeP.DSL.RegisterConditon('rpdeficit', function(target)
+NeP.DSL:Register('rpdeficit', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_RUNIC_POWER)) - (UnitPower(target, SPELL_POWER_RUNIC_POWER))
 end)
 
-NeP.DSL.RegisterConditon('energydeficit', function(target)
+NeP.DSL:Register('energydeficit', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_ENERGY)) - (UnitPower(target, SPELL_POWER_ENERGY))
 end)
 
-NeP.DSL.RegisterConditon('combodeficit', function(target)
+NeP.DSL:Register('combodeficit', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_COMBO_POINTS)) - (UnitPower(target, SPELL_POWER_COMBO_POINTS))
 end)
 
-NeP.DSL.RegisterConditon('equipped', function(target, item)
+NeP.DSL:Register('equipped', function(target, item)
 	if IsEquippedItem(item) == true then return true else return false end
 end)
 
-NeP.DSL.RegisterConditon('rprint', function(text)
+NeP.DSL:Register('rprint', function(text)
 	print(text)
 end)
 
-NeP.DSL.RegisterConditon("rubimarea.enemies", function(unit, distance)
+NeP.DSL:Register("rubimarea.enemies", function(unit, distance)
 	local total = 0
 	local distance = tonumber(distance)
 	if UnitExists(unit) then
@@ -43,7 +43,7 @@ NeP.DSL.RegisterConditon("rubimarea.enemies", function(unit, distance)
 	return total
 end)
 
-NeP.DSL.RegisterConditon("areattd", function(target)
+NeP.DSL:Register("areattd", function(target)
 	local ttd = 0
 	local total = 0
 	for i=1,#NeP.OM['unitEnemie'] do
