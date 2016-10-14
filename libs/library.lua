@@ -79,9 +79,9 @@ function Rubim.Offtanking()
 	 
 	if isRaid == true then
 	 --FIND THE OTHER TANK
-		for i=1, #NeP.Healing.Units do
-			if select(1,NeP.Healing.Units[i].key) ~= "player" and select(1,NeP.Healing.Units[i].role) == "TANK" then
-				tankKey = select(1,NeP.Healing.Units[i].key)
+		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+			if select(1,Obj.key) ~= "player" and select(1,Obj.role) == "TANK" then
+				tankKey = select(1,Obj.key)
 			end
 		end
 		if tankKey == nil then return false end
