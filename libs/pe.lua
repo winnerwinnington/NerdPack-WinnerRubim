@@ -49,9 +49,9 @@ NeP.DSL:Register("areattd", function(target)
 	for i=1,#NeP.OM['unitEnemie'] do
 		local Obj = NeP.OM['unitEnemie'][i]	
 		if Obj.distance <= 6 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
-			if NeP.DSL.Conditions["deathin"](Obj.key) < 8 then
+			if NeP.DSL:Get("deathin")(Obj.key) < 8 then
 				total = total+1
-				ttd = NeP.DSL.Conditions["deathin"](Obj.key) + ttd
+				ttd = NeP.DSL:Get("deathin")(Obj.key) + ttd
 			end
 		end
 	end
