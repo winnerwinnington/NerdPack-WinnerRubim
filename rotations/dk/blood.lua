@@ -1,3 +1,5 @@
+local _, Rubim = ...
+
 local exeOnLoad = function()
 --	NePCR.Splash()
 	Rubim.meeleSpell = 49998

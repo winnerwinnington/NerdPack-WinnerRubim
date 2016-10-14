@@ -1,3 +1,5 @@
+local _, Rubim = ...
+
 local exeOnLoad = function()
 	Rubim.meeleSpell = 49998
 	print('Meele Spell: '.. GetSpellInfo(Rubim.meeleSpell) .. '(' .. Rubim.meeleSpell .. ')')
