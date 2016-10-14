@@ -67,7 +67,7 @@ function Rubim.BloodMaster()
 		return "dps"
 	end
 	
-	if NeP.DSL.Conditions ['buff.duration')('player' , 'Dancing Rune Weapon') > 0 then
+	if NeP.DSL:Get('buff.duration')('player' , 'Dancing Rune Weapon') > 0 then
 		return "drw"
 	end
 	
@@ -712,6 +712,6 @@ function Rubim.PetDead()
 	end
 end
 
-NeP.library.register("Rubim", Rubim)
+NeP.Library:Add("Rubim", Rubim)
 
 --CASTING SHIT

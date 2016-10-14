@@ -94,7 +94,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.CR:Add(251, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Deathknight - Frost', {
+NeP.CR:Add(251, 'Rubim (WIP) Deathknight - Frost', {
 		{Shared},
 		{inCombat}
 	}, outCombat, exeOnLoad)

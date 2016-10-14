@@ -118,7 +118,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.CR:Add(260, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Rogue - Outlaw', {
+NeP.CR:Add(260, 'Rubim (WIP) Rogue - Outlaw', {
 		{'%pause', 'player.channeling'},
 		{Shared},
 		{Interrupts, 'target.interruptAt(24)'},

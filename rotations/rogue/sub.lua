@@ -52,7 +52,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.CR:Add(261, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Deathknight - Blood', {
+NeP.CR:Add(261, 'Rubim (WIP) Deathknight - Blood', {
 		{'%pause', 'player.channeling'},
 		{Shared},
 		{inCombat}
