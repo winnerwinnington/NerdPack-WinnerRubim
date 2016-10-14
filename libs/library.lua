@@ -1,3 +1,5 @@
+local _, Rubim = ...
+
 local RotationText = 0
 local rotype = CreateFrame("Frame", "Rotation Indicator", UIParent)
 local rottext = rotype:CreateFontString("MyrotypeText", "OVERLAY")
@@ -48,9 +50,6 @@ end
 
 rotype:SetScript("OnEvent", event)
 rotype:RegisterEvent("PLAYER_LOGIN")
-
-Rubim = {}
-NeP.library.register("Rubim", Rubim)
 
 function Rubim.Update()
 	if math.floor(NeP.DSL:Get("deathin")("target")) > 999999 then RotationText = 0
@@ -712,5 +711,7 @@ function Rubim.PetDead()
 		return true
 	end
 end
+
+NeP.library.register("Rubim", Rubim)
 
 --CASTING SHIT
