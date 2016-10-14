@@ -115,7 +115,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.Engine.registerRotation(260, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Rogue - Outlaw', {
+NeP.CR:Add(260, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Rogue - Outlaw', {
 		{'%pause', 'player.channeling'},
 		{Shared},
 		{Interrupts, 'target.interruptAt(24)'},

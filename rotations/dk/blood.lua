@@ -198,7 +198,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.Engine.registerRotation(250, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Deathknight - Blood', {
+NeP.CR:Add(250, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Deathknight - Blood', {
 		{'%pause', 'player.channeling'},
 		{Shared},
 		{inCombat}
