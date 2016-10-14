@@ -53,14 +53,14 @@ Rubim = {}
 NeP.library.register("Rubim", Rubim)
 
 function Rubim.Update()
-	if math.floor(NeP.DSL.Conditions["deathin"]("target")) > 999999 then RotationText = 0
+	if math.floor(NeP.DSL:Get("deathin")("target")) > 999999 then RotationText = 0
 	else
-		RotationText = math.floor(NeP.DSL.Conditions["deathin"]("target"))
+		RotationText = math.floor(NeP.DSL:Get("deathin")("target"))
 	end
 end
 
 function Rubim.BloodMaster()
-	if NeP.DSL.Conditions['areattd']('player') <= 10 then
+	if NeP.DSL:Get('areattd')('player') <= 10 then
 		return "burst"
 	end
 	
@@ -68,7 +68,7 @@ function Rubim.BloodMaster()
 		return "dps"
 	end
 	
-	if NeP.DSL.Conditions ['buff.duration']('player' , 'Dancing Rune Weapon') > 0 then
+	if NeP.DSL.Conditions ['buff.duration')('player' , 'Dancing Rune Weapon') > 0 then
 		return "drw"
 	end
 	
@@ -122,7 +122,7 @@ end
 
 function Rubim.AoETaunt()
 	local spell = "Dark Command"
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	if spellCooldown > 0 then
 		return false
 	end
@@ -141,14 +141,14 @@ end
 function Rubim.Paused()
 	if rubimapocalypse == false then
 		return false
-	elseif NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') > 0 then
+	elseif NeP.DSL:Get('spell.cooldown')("player", 'Apocalypse') > 0 then
 		rubimapocalypse = false
 		return true
 	end
 end
 
 function Rubim.ShouldPause()
-	if NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') <= 1 then
+	if NeP.DSL:Get('spell.cooldown')("player", 'Apocalypse') <= 1 then
 		rubimapocalypse = true
 	end
 end
@@ -158,7 +158,7 @@ end
 function Rubim.AoEOutbreak()
 	local spell = "Outbreak"
 	local debuff = "Virulent Plague"
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	if cdtime == nil then cdtime = 0 end
 	
 	if spellCooldown > 0 then
@@ -181,8 +181,8 @@ end
 
 function Rubim.TTDSpell(spell)
 	print("running")
-	local targetToDie = NeP.DSL.Conditions["deathin"]("target")
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local targetToDie = NeP.DSL:Get("deathin")("target")
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	print("Time to die: " .. targetToDie)
 	print("CD: " .. spellCooldown)
 	if targetToDie <= spellCooldown then
@@ -194,8 +194,8 @@ end
 
 local ttdsomething = function()
 	local spell = 7777777
-	local targetToDie = NeP.DSL.Conditions["deathin"]("target")
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local targetToDie = NeP.DSL:Get("deathin")("target")
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	if targetToDie <= (spellCooldown - 8) then
 		return true
 	else
@@ -210,9 +210,9 @@ function Rubim.AreaTTD()
 	for i=1,#NeP.OM['unitEnemie'] do
 		local Obj = NeP.OM['unitEnemie'][i]	
 		if Obj.distance <= 6 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
-			if NeP.DSL.Conditions["deathin"](Obj.key) < 8 then
+			if NeP.DSL:Get("deathin")(Obj.key) < 8 then
 				total = total+1
-				ttd = NeP.DSL.Conditions["deathin"](Obj.key) + ttd
+				ttd = NeP.DSL:Get("deathin")(Obj.key) + ttd
 			end
 		end
 	end
@@ -224,7 +224,7 @@ function Rubim.AreaTTD()
 end
 
 function Rubim.AoEMissingDebuff(spell, debuff, range)
-	if spell == nil or range == nil or NeP.DSL.Conditions['spell.cooldown']("player", 61304) ~= 0 then return false end
+	if spell == nil or range == nil or NeP.DSL:Get('spell.cooldown')("player", 61304) ~= 0 then return false end
 	local spell = select(1,GetSpellInfo(spell))
 	if not IsUsableSpell(spell) then return false end
 	for i=1,#NeP.OM['unitEnemie'] do
@@ -244,7 +244,7 @@ end
 
 function Rubim.soulGorge()
 	local debuff = 'Blood Plague'
-	if NeP.DSL.Conditions['spell.cooldown']("player", 61304) ~= 0 then return false end
+	if NeP.DSL:Get('spell.cooldown')("player", 61304) ~= 0 then return false end
 	for i=1,#NeP.OM['unitEnemie'] do
 		local Obj = NeP.OM['unitEnemie'][i]	
 		if Obj.distance <= 30 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
