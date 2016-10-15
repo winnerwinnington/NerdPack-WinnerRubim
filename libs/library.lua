@@ -1,3 +1,5 @@
+local _, Rubim = ...
+
 local RotationText = 0
 local rotype = CreateFrame("Frame", "Rotation Indicator", UIParent)
 local rottext = rotype:CreateFontString("MyrotypeText", "OVERLAY")
@@ -49,18 +51,15 @@ end
 rotype:SetScript("OnEvent", event)
 rotype:RegisterEvent("PLAYER_LOGIN")
 
-Rubim = {}
-NeP.library.register("Rubim", Rubim)
-
 function Rubim.Update()
-	if math.floor(NeP.DSL.Conditions["deathin"]("target")) > 999999 then RotationText = 0
+	if math.floor(NeP.DSL:Get("deathin")("target")) > 999999 then RotationText = 0
 	else
-		RotationText = math.floor(NeP.DSL.Conditions["deathin"]("target"))
+		RotationText = math.floor(NeP.DSL:Get("deathin")("target"))
 	end
 end
 
 function Rubim.BloodMaster()
-	if NeP.DSL.Conditions['areattd']('player') <= 10 then
+	if NeP.DSL:Get('areattd')('player') <= 10 then
 		return "burst"
 	end
 	
@@ -68,7 +67,7 @@ function Rubim.BloodMaster()
 		return "dps"
 	end
 	
-	if NeP.DSL.Conditions ['buff.duration']('player' , 'Dancing Rune Weapon') > 0 then
+	if NeP.DSL:Get('buff.duration')('player' , 'Dancing Rune Weapon') > 0 then
 		return "drw"
 	end
 	
@@ -80,9 +79,9 @@ function Rubim.Offtanking()
 	 
 	if isRaid == true then
 	 --FIND THE OTHER TANK
-		for i=1, #NeP.Healing.Units do
-			if select(1,NeP.Healing.Units[i].key) ~= "player" and select(1,NeP.Healing.Units[i].role) == "TANK" then
-				tankKey = select(1,NeP.Healing.Units[i].key)
+		for _, Obj in pairs(NeP.OM:GetRoster()) do
+			if select(1,Obj.key) ~= "player" and select(1,Obj.role) == "TANK" then
+				tankKey = select(1,Obj.key)
 			end
 		end
 		if tankKey == nil then return false end
@@ -102,8 +101,7 @@ function Rubim.Targeting()
 	local exists = UnitExists("target")
 	local hp = UnitHealth("target")
 	if exists == false or (exists == true and hp < 1) then
-		for i=1,#NeP.OM['unitEnemie'] do
-			local Obj = NeP.OM['unitEnemie'][i]	
+		for _, Obj in pairs(NeP.OM:GetRoster()) do
 			if Obj.distance <= 10 then
 				RunMacroText("/tar " .. Obj.key)
 				return true
@@ -113,7 +111,7 @@ function Rubim.Targeting()
 end
 
 function Rubim.WarriorFR()
-	if select(1,NeP.CombatTracker.getDMG("player")) <= (UnitHealthMax("player") * 3) / (100) then
+	if select(1,NeP.CombatTracker:getDMG("player")) <= (UnitHealthMax("player") * 3) / (100) then
 		return true
 	else
 		return false
@@ -122,15 +120,14 @@ end
 
 function Rubim.AoETaunt()
 	local spell = "Dark Command"
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	if spellCooldown > 0 then
 		return false
 	end
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for _, Obj in pairs(NeP.OM:GetRoster()) do
 		local Threat = UnitThreatSituation("player", Obj.key)
 		if Threat ~= nil and Threat >= 0 and Threat < 3 and Obj.distance <= 30 then
-			NeP.Engine.Cast_Queue(spell, Obj.key)
+			NeP:Queue(spell, Obj.key)
 			return true
 		end
 	end
@@ -141,14 +138,14 @@ end
 function Rubim.Paused()
 	if rubimapocalypse == false then
 		return false
-	elseif NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') > 0 then
+	elseif NeP.DSL:Get('spell.cooldown')("player", 'Apocalypse') > 0 then
 		rubimapocalypse = false
 		return true
 	end
 end
 
 function Rubim.ShouldPause()
-	if NeP.DSL.Conditions['spell.cooldown']("player", 'Apocalypse') <= 1 then
+	if NeP.DSL:Get('spell.cooldown')("player", 'Apocalypse') <= 1 then
 		rubimapocalypse = true
 	end
 end
@@ -158,7 +155,7 @@ end
 function Rubim.AoEOutbreak()
 	local spell = "Outbreak"
 	local debuff = "Virulent Plague"
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	if cdtime == nil then cdtime = 0 end
 	
 	if spellCooldown > 0 then
@@ -167,13 +164,12 @@ function Rubim.AoEOutbreak()
 	
 	if GetTime() - cdtime <= 1 then return false end
 	
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for _, Obj in pairs(NeP.OM:GetRoster()) do	
 		local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 		if not debuffDuration then debuffDuration = 0 end
 		if Obj.distance <= 15 and debuffDuration - GetTime() < 1.5 and GetTime() - cdtime >= 1 and UnitHealth(Obj.key) > 100 and UnitAffectingCombat(Obj.key) == true then
 			cdtime = GetTime()
-			NeP.Engine.Cast_Queue(spell, Obj.key)
+			NeP:Queue(spell, Obj.key)
 			return true
 		end
 	end
@@ -181,8 +177,8 @@ end
 
 function Rubim.TTDSpell(spell)
 	print("running")
-	local targetToDie = NeP.DSL.Conditions["deathin"]("target")
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local targetToDie = NeP.DSL:Get("deathin")("target")
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	print("Time to die: " .. targetToDie)
 	print("CD: " .. spellCooldown)
 	if targetToDie <= spellCooldown then
@@ -194,8 +190,8 @@ end
 
 local ttdsomething = function()
 	local spell = 7777777
-	local targetToDie = NeP.DSL.Conditions["deathin"]("target")
-	local spellCooldown = NeP.DSL.Conditions['spell.cooldown']("player", spell)
+	local targetToDie = NeP.DSL:Get("deathin")("target")
+	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	if targetToDie <= (spellCooldown - 8) then
 		return true
 	else
@@ -207,12 +203,11 @@ end
 function Rubim.AreaTTD()
 	local ttd = 0
 	local total = 0
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for _, Obj in pairs(NeP.OM:GetRoster()) do
 		if Obj.distance <= 6 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
-			if NeP.DSL.Conditions["deathin"](Obj.key) < 8 then
+			if NeP.DSL:Get("deathin")(Obj.key) < 8 then
 				total = total+1
-				ttd = NeP.DSL.Conditions["deathin"](Obj.key) + ttd
+				ttd = NeP.DSL:Get("deathin")(Obj.key) + ttd
 			end
 		end
 	end
@@ -224,17 +219,16 @@ function Rubim.AreaTTD()
 end
 
 function Rubim.AoEMissingDebuff(spell, debuff, range)
-	if spell == nil or range == nil or NeP.DSL.Conditions['spell.cooldown']("player", 61304) ~= 0 then return false end
+	if spell == nil or range == nil or NeP.DSL:Get('spell.cooldown')("player", 61304) ~= 0 then return false end
 	local spell = select(1,GetSpellInfo(spell))
 	if not IsUsableSpell(spell) then return false end
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for _, Obj in pairs(NeP.OM:GetRoster()) do
 		if Obj.distance <= range and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 1.5 then
 --				print(Obj.name)
-				if UnitCanAttack('player', Obj.key)	and NeP.Engine.Infront('player', Obj.key) then		
-					NeP.Engine.Cast_Queue(spell, Obj.key)
+				if UnitCanAttack('player', Obj.key)	and NeP.Protected.Infront('player', Obj.key) then		
+					NeP:Queue(spell, Obj.key)
 					return true
 				end
 			end
@@ -244,9 +238,8 @@ end
 
 function Rubim.soulGorge()
 	local debuff = 'Blood Plague'
-	if NeP.DSL.Conditions['spell.cooldown']("player", 61304) ~= 0 then return false end
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	if NeP.DSL:Get('spell.cooldown')("player", 61304) ~= 0 then return false end
+	for _, Obj in pairs(NeP.OM:GetRoster()) do
 		if Obj.distance <= 30 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 			if not debuffDuration then debuffDuration = 0 end
@@ -261,14 +254,13 @@ function Rubim.MoonfireAOE()
 	local Spell = "Moonfire"
 	if not IsUsableSpell(Spell) then return false end
 	
-	for i=1,#NeP.OM['unitEnemie'] do
-		local Obj = NeP.OM['unitEnemie'][i]	
+	for _, Obj in pairs(NeP.OM:GetRoster()) do
 		if Obj.distance <= 5 and (UnitAffectingCombat(Obj.key) or Obj.is == 'dummy') then
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, Spell, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 3 then
 --				print(Obj.name)
-				if UnitCanAttack('player', Obj.key)	and NeP.Engine.Infront('player', Obj.key) and IsSpellInRange(Spell, Obj.key) then		
-					NeP.Engine.Cast(Spell, Obj.key)
+				if UnitCanAttack('player', Obj.key)	and NeP.Protected.Infront('player', Obj.key) and IsSpellInRange(Spell, Obj.key) then		
+					NeP.Protected.Cast(Spell, Obj.key)
 					return true
 				end
 			end
@@ -313,13 +305,13 @@ end
 
 function Rubim.AoERange()
 	if CheckInteractDistance("target", 3) == true
-	or SpellRange(meeleSpell) == true
+	or SpellRange(Rubim.meeleSpell) == true
 	then return true else return false
 	end
 end
 
 function Rubim.MeeleRange()
-	if SpellRange(meeleSpell) == true
+	if SpellRange(Rubim.meeleSpell) == true
 	then return true else return false
 	end
 end
@@ -489,12 +481,12 @@ function Rubim.GroundSpell(spell)
 		CastSpellByName(spell)
 	else
 		CastSpellByName(spell)
-		NeP.Engine.Cast_Queue(spell)
+		NeP:Queue(spell)
 	end
 end
 
 function Rubim.QueuedSpell(spell)
-	NeP.Engine.Cast_Queue(spell)     
+	NeP:Queue(spell)     
 end
 
 function Rubim.IG()
@@ -712,5 +704,7 @@ function Rubim.PetDead()
 		return true
 	end
 end
+
+NeP.Library:Add("Rubim", Rubim)
 
 --CASTING SHIT

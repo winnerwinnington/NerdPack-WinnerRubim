@@ -1,11 +1,14 @@
+local _, Rubim = ...
+
 local exeOnLoad = function()
-	meeleSpell = 49998
-	print('Meele Spell: '.. GetSpellInfo(meeleSpell) .. '(' .. meeleSpell .. ')')
-	NeP.Interface.CreateToggle(
-		'useDS',
-		'Interface\\Icons\\spell_deathknight_butcher2.png',
-		'Use Dark Succor',
-		'Using Dark Scuccor ot heal.')
+	Rubim.meeleSpell = 49998
+	print('Meele Spell: '.. GetSpellInfo(Rubim.meeleSpell) .. '(' .. Rubim.meeleSpell .. ')')
+	NeP.Interface:AddToggle({
+		key = 'useDS',
+		icon = 'Interface\\Icons\\spell_deathknight_butcher2.png',
+		name = 'Use Dark Succor',
+		text = 'Using Dark Scuccor ot heal.'
+	})
 end
 
 local Shared = {
@@ -94,7 +97,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.Engine.registerRotation(251, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Deathknight - Frost', {
+NeP.CR:Add(251, 'Rubim (WIP) Deathknight - Frost', {
 		{Shared},
 		{inCombat}
 	}, outCombat, exeOnLoad)

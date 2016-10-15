@@ -1,29 +1,34 @@
+local _, Rubim = ...
+
 local exeOnLoad = function()
 --	NePCR.Splash()
-	meeleSpell = 49998
+	Rubim.meeleSpell = 49998
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rDeath Knight |cffC41F3BBlood |r")
 	print("|cffFFFF00 --- |rRecommended Talents: 1/2 - 2/1 - 3/1 - 4/2 - 5/1 - 6/3 - 7/1")
 	print("|cffFFFF00 --- |rPersonal use.")
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 
-	NeP.Interface.CreateToggle(
-		'saveDS',
-		'Interface\\Icons\\spell_deathknight_butcher2.png',
-		'Save Death Strike',
-		'BOT will Only Death Strike when RP is Capped, useful on fights were you need to cast an active mitigation.')
+	NeP.Interface:AddToggle({
+		key = 'saveDS',
+		icon = 'Interface\\Icons\\spell_deathknight_butcher2.png',
+		name = 'Save Death Strike',
+		text = 'BOT will Only Death Strike when RP is Capped, useful on fights were you need to cast an active mitigation.'
+	})
 		
-	NeP.Interface.CreateToggle(
-		'bonestorm',
-		'Interface\\Icons\\Ability_deathknight_boneshield.png',
-		'Use Bonestorm',
-		'This will pool RP to use Bonestorm.')
+	NeP.Interface:AddToggle({
+		key = 'bonestorm',
+		icon = 'Interface\\Icons\\Ability_deathknight_boneshield.png',
+		name = 'Use 194844',
+		text = 'This will pool RP to use 194844.'
+	})
 	
-	NeP.Interface.CreateToggle(
-		'aoetaunt',
-		'Interface\\Icons\\spell_nature_shamanrage.png',
-		'Aoe Taunt',
-		'Experimental AoE Taunt.')	
+	NeP.Interface:AddToggle({
+		key = 'aoetaunt',
+		icon = 'Interface\\Icons\\spell_nature_shamanrage.png',
+		name = 'Aoe Taunt',
+		text = 'Experimental AoE Taunt.'
+	 })		
 	
 end
 
@@ -198,7 +203,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.Engine.registerRotation(250, '[|cff'..NeP.Interface.addonColor..'Rubim (WIP) Deathknight - Blood', {
+NeP.CR:Add(250, 'Rubim (WIP) Deathknight - Blood', {
 		{'%pause', 'player.channeling'},
 		{Shared},
 		{inCombat}
