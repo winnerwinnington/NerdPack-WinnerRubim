@@ -32,23 +32,6 @@ local exeOnLoad = function()
 	
 end
 
-local function keyPress(keypressed)
-
-    if keypressed == 'shift' then
-        return IsShiftKeyDown() and GetCurrentKeyBoardFocus() == nil
-    end
-
-    if keypressed == 'lctrl' then
-        return IsLeftControlKeyDown() and GetCurrentKeyBoardFocus() == nil
-    end
-
-    if keypressed == 'lalt' then
-        return IsLeftAltKeyDown() and GetCurrentKeyBoardFocus() == nil 
-    end
-
-    return false
-end
-
 local DeathStrikeHELL = {
 	{ "Death Strike" , { "player.health <= 65" , "!toggle(saveDS)" }}, --DS Emergency		
 	{{ --Bonestormless
