@@ -1,55 +1,5 @@
 local _, Rubim = ...
-
-local RotationText = 0
-local rotype = CreateFrame("Frame", "Rotation Indicator", UIParent)
-local rottext = rotype:CreateFontString("MyrotypeText", "OVERLAY")
-local OneTimeRubim = 1
-local event = function()
-	if OneTimeRubim == nil then
-	rotype:SetWidth(240)
-	rotype:SetHeight(40)
-	rotype:SetPoint("CENTER") -- Whats the chat anchor?
-	local tex = rotype:CreateTexture("BACKGROUND")
-	tex:SetAllPoints()
-	tex:SetTexture(0, 0, 0); tex:SetAlpha(0.5)
-	OneTimeRubim = 1
-	end
-
-	rottext:SetFontObject(GameFontNormalSmall)
-	rottext:SetJustifyH("CENTER") -- 
-	rottext:SetPoint("CENTER", rotype, "CENTER", 0, 0) -- Text on center
-	rottext:SetFont("Fonts\\FRIZQT__.TTF", 20)
-	rottext:SetShadowOffset(1, -1)
-	rottext:SetText("Hello")
-
-	rotype:SetScript("OnUpdate", function()
-	rottext:SetText("TTD: " .. RotationText)
-	end)
-   
-	rotype:SetMovable(true)
-	rotype:EnableMouse(true)
-	rotype:SetScript("OnMouseDown", function(self, button)
-	if button == "LeftButton" and not self.isMoving then
-		self:StartMoving();
-		self.isMoving = true;
-		end
-	end)
-	rotype:SetScript("OnMouseUp", function(self, button)
-	if button == "LeftButton" and self.isMoving then
-		self:StopMovingOrSizing();
-		self.isMoving = false;
-	end
-	end)
-	rotype:SetScript("OnHide", function(self)
-	if ( self.isMoving ) then
-		self:StopMovingOrSizing();
-		self.isMoving = false;
-	end
-	end)
-end
-
-rotype:SetScript("OnEvent", event)
-rotype:RegisterEvent("PLAYER_LOGIN")
+--meta _G['Rubim'] = Rubim
 
 function Rubim.Update()
 	if math.floor(NeP.DSL:Get("deathin")("target")) > 999999 then RotationText = 0
@@ -63,7 +13,7 @@ function Rubim.BloodMaster()
 		return "burst"
 	end
 	
-	if Rubim.Offtanking() then
+	if NeP.Library:Fetch('Rubim').Offtanking() then
 		return "dps"
 	end
 	
@@ -182,17 +132,6 @@ function Rubim.TTDSpell(spell)
 	print("Time to die: " .. targetToDie)
 	print("CD: " .. spellCooldown)
 	if targetToDie <= spellCooldown then
-		return true
-	else
-		return false
-	end
-end
-
-local ttdsomething = function()
-	local spell = 7777777
-	local targetToDie = NeP.DSL:Get("deathin")("target")
-	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
-	if targetToDie <= (spellCooldown - 8) then
 		return true
 	else
 		return false
@@ -472,6 +411,7 @@ function Rubim.CreateMacro()
 end
 
 function Rubim.CastGroundSpell()
+	if UnitAffectingCombat('player') == false and NeP.DSL:Get('movingfor')('player',0.1) == false then return false end
 	if not SpellIsTargeting() then return false end
 	if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() return true end  
 end
