@@ -6,7 +6,7 @@
 --/dump NeP.DSL:Get('movingfor')('player')
 --/dump NeP.DSL:Get('blood.rotation')('player')
 --isin
---/dump NeP.DSL:Get('onmeele')('player')
+--/dump NeP.DSL:Get('onmelee')('player')
 ----actions+=/hamstring,if=buff.battle_cry_deadly_calm.remains>cooldown.hamstring.remains
 
 
@@ -16,8 +16,8 @@ NeP.DSL:Register('rotation', function(rotation)
 	return false
 end)
 
-NeP.DSL:Register('onmeele', function(rotation)
-	local isitokay = NeP.Library:Fetch('Rubim').MeeleRange()
+NeP.DSL:Register('onmelee', function(rotation)
+	local isitokay = NeP.Library:Fetch('Rubim').meleeRange()
 	return isitokay
 end)
 
@@ -46,7 +46,7 @@ NeP.DSL:Register("rubimarea.enemies", function(unit, distance)
 			end
 		end
 	end
-	if total == 0 and UnitExists('target') and UnitHealth('target') > 0 and IsSpellInRange(GetSpellInfo(meeleSpell), "target") == 1 then
+	if total == 0 and UnitExists('target') and UnitHealth('target') > 0 and IsSpellInRange(GetSpellInfo(meleeSpell), "target") == 1 then
 		total = 1
 	end
 	return total
