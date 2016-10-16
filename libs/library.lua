@@ -1,5 +1,5 @@
 local _, Rubim = ...
---meta _G['Rubim'] = Rubim
+--_G['Rubim'] = Rubim
 
 function Rubim.Update()
 	if math.floor(NeP.DSL:Get("deathin")("target")) > 999999 then RotationText = 0
