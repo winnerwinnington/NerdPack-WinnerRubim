@@ -37,7 +37,6 @@ local Interrupts = {
 }
 
 local build = {
-	{ "@Rubim.SetText('Builders')" },
 --# Builders
 --actions.build=ghostly_strike,if=combo_points.deficit>=1+buff.broadsides.up&!buff.curse_of_the_dreadblades.up&(debuff.ghostly_strike.remains<debuff.ghostly_strike.duration*0.3|(cooldown.curse_of_the_dreadblades.remains<3&debuff.ghostly_strike.remains<14))&(combo_points>=3|(variable.rtb_reroll&time>=10))
 --	{'Ghostly Strike', {'player.buff(Broadsides)', '!player.buff(Curse of the Dreadblades)', 'target.debuff(Ghostly Strike).duration < 2'}},
@@ -46,7 +45,6 @@ local build = {
 --actions.build+=/pistol_shot,if=combo_points.deficit>=1+buff.broadsides.up&buff.opportunity.up&energy.time_to_max>2-talent.quick_draw.enabled
 	{'Pistol Shot', {'player.buff(Opportunity)', 'player.combodeficit >= 1' }},	
 --actions.build+=/saber_slash,if=variable.ss_useable
-	{'Saber Slash', 'player.combopoints < 5'},
 	{'Saber Slash', 'player.combopoints < 5'},
 }
 
