@@ -211,7 +211,7 @@ function Rubim.MoonfireAOE()
 end
 
 function Rubim.AoETargetsM()
-	if CheckMobsinMeele() >= 3 then
+	if CheckMobsinmelee() >= 3 then
 		return true
 	else
 		return false
@@ -247,13 +247,13 @@ end
 
 function Rubim.AoERange()
 	if CheckInteractDistance("target", 3) == true
-	or SpellRange(Rubim.meeleSpell) == true
+	or SpellRange(Rubim.meleeSpell) == true
 	then return true else return false
 	end
 end
 
-function Rubim.MeeleRange()
-	if SpellRange(Rubim.meeleSpell) == true
+function Rubim.meleeRange()
+	if SpellRange(Rubim.meleeSpell) == true
 	then return true else return false
 	end
 end
