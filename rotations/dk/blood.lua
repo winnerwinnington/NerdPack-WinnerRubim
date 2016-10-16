@@ -2,7 +2,7 @@ local _, Rubim = ...
 
 local exeOnLoad = function()
 --	NePCR.Splash()
-	Rubim.meeleSpell = 49998
+	Rubim.meleeSpell = 49998
 	print("|cffFFFF00 ----------------------------------------------------------------------|r")
 	print("|cffFFFF00 --- |rDeath Knight |cffC41F3BBlood |r")
 	print("|cffFFFF00 --- |rRecommended Talents: 1/2 - 2/1 - 3/1 - 4/2 - 5/1 - 6/3 - 7/1")
@@ -50,37 +50,37 @@ local DRW = {
 	{'Death Strike' , 'player.runicpower >= 75'},
 	{'Heart Strike' },	
 	{'Death Strike' },
-	}, "player.onmeele" },
+	}, "player.onmelee" },
 }
 
 local DPS = {
 --	{ "@Rubim.SetText('DPS')" },
 	{{
 	{"Marrowrend" , "player.buff(Bone Shield).count <= 6 || player.buff(Bone Shield).duration <= 3" },
-	}, 'player.onmeele' },
-	{'Consumption' , 'player.allstacked' },
+	}, 'player.onmelee' },
+	{'Consumption' , 'player.area(7).enemies >= 1 & player.allstacked' },
 	{{
 	{'Death Strike' , 'player.runicpower >= 75'},
 	{'Death Strike' , 'player.buff(Blood Shield)'},
 	{'Heart Strike' },
-	}, 'player.onmeele' },
+	}, 'player.onmelee' },
 }
 
 local Burst = {
 --  {"@Rubim.SetText('Burst')" },
 	{{
 	{"Marrowrend" , "player.buff(Bone Shield).count <= 6 || player.buff(Bone Shield).duration <= 3" },
-	}, 'player.onmeele' },
-	{'Consumption' , 'player.allstacked' },
+	}, 'player.onmelee' },
+	{'Consumption' , 'player.area(7).enemies >= 1 & player.allstacked' },
 	{{
 		{{
 		{'Death Strike' , 'player.health <= 70' },
 		{'Death Strike' , 'player.runicpower >= 75'},
-		}, "player.onmeele" },
+		}, "player.onmelee" },
 		{'Blood Boil'},
 		{{
 		{'Heart Strike' },	
-		}, "player.onmeele" },
+		}, "player.onmelee" },
 	}, 'player.area(8).enemies >= 2'},
 	
 	{{
@@ -89,7 +89,7 @@ local Burst = {
 		{"Marrowrend" , "player.buff(Bone Shield).count <= 6 || player.buff(Bone Shield).duration <= 3" },
 		{"Heart Strike"},
 		{'Death Strike'},
-		}, "player.onmeele" },
+		}, "player.onmelee" },
 		{'Blood Boil'},
 	}, 'player.area(8).enemies <= 1'},
 }
@@ -102,21 +102,21 @@ local Bonestorm = {
 	{ "Death Strike" , "player.health <= 90 & !toggle(saveDS) & toggle(bonestorm) & player.spell(Bonestorm).cooldown >= 2" }, --Saving RP
 	{ "Death Strike" , "player.runicpower >= 75 & !toggle(bonestorm)" }, --DS for RP Dump
 	{ "Death Strike" , "player.spell(Bonestorm).cooldown >= 2 & player.runicpower >= 75 & toggle(bonestorm) & player.areattd >= 10" }, --DS for RP Dump if Bonestorm is on CD
-	}, 'player.onmeele' },
+	}, 'player.onmelee' },
 }
 
 local Bonestormless = {
 	{{
 	{ "Death Strike" , "player.health <= 90 & !toggle(saveDS)" }, --DS to Heal
 	{ "Death Strike" , "player.runicpower >= 75" }, --DS for RP Dump		
-	}, 'player.onmeele' },
+	}, 'player.onmelee' },
 }
 
 local General = {
 	{{
 		{{
 		{"Marrowrend" , "player.buff(Bone Shield).count <= 6 || player.buff(Bone Shield).duration <= 3" },
-		}, 'player.onmeele' },
+		}, 'player.onmelee' },
 		{ Bonestorm , 'talent(7, 1)' },
 		{ Bonestormless , '!talent(7, 1)' },
 		{{
@@ -124,14 +124,14 @@ local General = {
 		{"Heart Strike" , "player.movingfor >= 1 & player.buff(Bone Shield).count >= 6" },
 		{"Heart Strike" , "player.health <= 75 & player.buff(Bone Shield).count >= 6" },
 		{"Heart Strike" , "player.runes >= 4.8 & player.buff(Bone Shield).count >= 6"},
-		}, 'player.onmeele' },
-		{'Consumption' , 'player.allstacked' },
+		}, 'player.onmelee' },
+		{'Consumption' , 'player.area(7).enemies >= 1 & player.allstacked' },
 	}, "player.area(10).enemies <= 2" },
 	
 	{{
 		{{
 		{"Marrowrend" , "player.buff(Bone Shield).count <= 6 || player.buff(Bone Shield).duration <= 3" },
-		}, 'player.onmeele' },
+		}, 'player.onmelee' },
 		{ Bonestorm , 'talent(7, 1)' },
 		{ Bonestormless , '!talent(7, 1)' },
 		{"Blood Boil" , "player.area(8).enemies >= 1"},
@@ -140,8 +140,8 @@ local General = {
 		{"Heart Strike" , "player.health <= 75" },
 		{"Heart Strike" , "player.movingfor >= 1" },
 		{"Heart Strike" , "player.runes >= 4.8"},
-		}, 'player.onmeele' },
-		{'Consumption' , 'player.allstacked' },
+		}, 'player.onmelee' },
+		{'Consumption' , 'player.area(7).enemies >= 1 & player.allstacked' },
 	}, "player.area(10).enemies >= 3" },
 }
 
