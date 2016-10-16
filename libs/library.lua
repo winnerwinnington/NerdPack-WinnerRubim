@@ -150,8 +150,6 @@ function Rubim.ShouldPause()
 	end
 end
 
-
-
 function Rubim.AoEOutbreak()
 	local spell = "Outbreak"
 	local debuff = "Virulent Plague"
@@ -181,11 +179,7 @@ function Rubim.TTDSpell(spell)
 	local spellCooldown = NeP.DSL:Get('spell.cooldown')("player", spell)
 	print("Time to die: " .. targetToDie)
 	print("CD: " .. spellCooldown)
-	if targetToDie <= spellCooldown then
-		return true
-	else
-		return false
-	end
+	return targetToDie <= spellCooldown
 end
 
 local ttdsomething = function()
@@ -211,11 +205,7 @@ function Rubim.AreaTTD()
 			end
 		end
 	end
-	if ttd > 0 and (ttd/total) <= 10 then
-		return true
-	else
-		return false
-	end
+	return ttd > 0 and (ttd/total) <= 10
 end
 
 function Rubim.AoEMissingDebuff(spell, debuff, range)
@@ -227,7 +217,7 @@ function Rubim.AoEMissingDebuff(spell, debuff, range)
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, debuff, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 1.5 then
 --				print(Obj.name)
-				if UnitCanAttack('player', Obj.key)	and NeP.Protected.Infront('player', Obj.key) then		
+				if UnitCanAttack('player', Obj.key)	and NeP.DSL:Get('Infront')(Obj.key) then		
 					NeP:Queue(spell, Obj.key)
 					return true
 				end
@@ -259,8 +249,8 @@ function Rubim.MoonfireAOE()
 			local _,_,_,_,_,_,debuffDuration = UnitDebuff(Obj.key, Spell, nil, 'PLAYER')
 			if not debuffDuration or debuffDuration - GetTime() < 3 then
 --				print(Obj.name)
-				if UnitCanAttack('player', Obj.key)	and NeP.Protected.Infront('player', Obj.key) and IsSpellInRange(Spell, Obj.key) then		
-					NeP.Protected.Cast(Spell, Obj.key)
+				if UnitCanAttack('player', Obj.key)	and NeP.DSL:Get('Infront')(Obj.key) and IsSpellInRange(Spell, Obj.key) then		
+					NeP:Queue(Spell, Obj.key)
 					return true
 				end
 			end
@@ -269,51 +259,28 @@ function Rubim.MoonfireAOE()
 end
 
 function Rubim.AoETargetsM()
-	if CheckMobsinMeele() >= 3 then
-		return true
-	else
-		return false
-	end
+	return CheckMobsinMeele() >= 3
 end
 
 function Rubim.AoETargetsR()
-	if CheckMobsinAoE() >= 3 then
-		return true
-	else
-		return false
-	end
+	return CheckMobsinAoE() >= 3
 end
 
 
 function Rubim.AggroCheck()
-	if UnitThreatSituation("player") == nil
-	then
-		return false
-	elseif UnitThreatSituation("player") == 2	
-	then
-		return true
-	else
-		return false
-	end
+	return not UnitThreatSituation("player") or UnitThreatSituation("player") == 2
 end
 
 function SpellRange(spellid)
-	if IsSpellInRange(GetSpellInfo(spellid), "target") == 1
-	then return true else return false
-	end
+	return IsSpellInRange(GetSpellInfo(spellid), "target") == 1
 end
 
 function Rubim.AoERange()
-	if CheckInteractDistance("target", 3) == true
-	or SpellRange(Rubim.meeleSpell) == true
-	then return true else return false
-	end
+	return CheckInteractDistance("target", 3) or SpellRange(Rubim.meeleSpell)
 end
 
 function Rubim.MeeleRange()
-	if SpellRange(Rubim.meeleSpell) == true
-	then return true else return false
-	end
+	return SpellRange(Rubim.meeleSpell)
 end
 
 function Rubim.CDCheck(spellid)
@@ -348,8 +315,7 @@ function Rubim.DrinkStagger()
 	if UnitDebuff("player", GetSpellInfo(124273)) then
 		return true
 	end
-	if UnitDebuff("player", GetSpellInfo(124275)) and Rubim.StaggerValue() > 85
-	then
+	if UnitDebuff("player", GetSpellInfo(124275)) and Rubim.StaggerValue() > 85 then
 		return true
 	end
 end
@@ -490,13 +456,8 @@ function Rubim.QueuedSpell(spell)
 end
 
 function Rubim.IG()
-IgnorePainAbsorb = select(17, UnitAura("player", "Ignore Pain", nil, "HELPFUL"))
-
-	if IgnorePainAbsorb ~= nil then
-		return false
-	else
-		return true
-	end
+	IgnorePainAbsorb = select(17, UnitAura("player", "Ignore Pain", nil, "HELPFUL"))
+	return IgnorePainAbsorb ~= nil
 end
 
 function Rubim.RuneCheck(color,number)
@@ -560,69 +521,37 @@ function Rubim.RuneCheck(color,number)
 	end
 	
 	if color == "Blood" then
-		if BloodPartial >= number then
-			return true
-		else
-			return false
-		end
+		return BloodPartial >= number
 	end
 	
 	if color == "Unholy" then
-		if UnholyPartial >= number then
-			return true
-		else
-			return false
-		end
+		return UnholyPartial >= number
 	end
 	
 	if color == "Frost" then
-		if FrostPartial >= number then
-			return true
-		else
-			return false
-		end
+		return FrostPartial >= number
 	end	
 	
 	if color == "Death" then
-		if DeathPartial >= number then
-			return true
-		else
-			return false
-		end
+		return DeathPartial >= number
 	end
 	
 	
 	--INVERSE
 	if color == "InverseBlood" then
-		if BloodPartial <= number then
-			return true
-		else
-			return false
-		end
+		return BloodPartial <= number
 	end
 	
 	if color == "InverseUnholy <" then
-		if UnholyPartial <= number then
-			return true
-		else
-			return false
-		end
+		return UnholyPartial <= number
 	end
 	
 	if color == "InverseFrost <" then
-		if FrostPartial <= number then
-			return true
-		else
-			return false
-		end
+		return FrostPartial <= number
 	end	
 	
 	if color == "InverseDeath <" then
-		if DeathPartial <= number then
-			return true
-		else
-			return false
-		end
+		return DeathPartial <= number
 	end
 	
 	
@@ -640,11 +569,7 @@ function Rubim.RunesUnavailable(number)
             unavailable = unavailable + 1
         end
     end
-    if unavailable >= number then
-		return true
-	else
-		return false
-	end
+    return unavailable >= number
 end
 
 function Rubim.IcyTalons()
@@ -654,19 +579,11 @@ function Rubim.IcyTalons()
 	else
 		ITTimer = select(7,UnitBuff("player", GetSpellInfo(194878))) - GetTime()
 	end
-	if ITTimer >= Rubim.CDCheck(61304) then
-		return true
-	else
-		return false
-	end	
+	return ITTimer >= Rubim.CDCheck(61304)
 end
 
 function Rubim.SR()
-	if Rubim.CDCheck(130736) >= 4 then
-		return true
-	else
-		return false
-	end
+	return Rubim.CDCheck(130736) >= 4
 end
 
 function Rubim.DelayStagger()
