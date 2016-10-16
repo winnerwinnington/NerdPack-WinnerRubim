@@ -13,7 +13,7 @@ function Rubim.BloodMaster()
 		return "burst"
 	end
 	
-	if NeP.Library:Fetch('Rubim').Offtanking() then
+	if self.Offtanking() then
 		return "dps"
 	end
 	
@@ -219,7 +219,7 @@ function Rubim.AoERange()
 end
 
 function Rubim.MeeleRange()
-	return SpellRange(Rubim.meeleSpell)
+	return SpellRange(self.meeleSpell)
 end
 
 function Rubim.CDCheck(spellid)
@@ -254,7 +254,7 @@ function Rubim.DrinkStagger()
 	if UnitDebuff("player", GetSpellInfo(124273)) then
 		return true
 	end
-	if UnitDebuff("player", GetSpellInfo(124275)) and Rubim.StaggerValue() > 85 then
+	if UnitDebuff("player", GetSpellInfo(124275)) and self.StaggerValue() > 85 then
 		return true
 	end
 end
@@ -339,7 +339,7 @@ function Rubim.ttd(unit)
 				if ((timecurr - timestart)==0) or ((thpstart - thpcurr)==0) then
 					timeToDie = 999
 				else
-					timeToDie = Rubim.round2(thpcurr/((thpstart - thpcurr) / (timecurr - timestart)),2)
+					timeToDie = self.round2(thpcurr/((thpstart - thpcurr) / (timecurr - timestart)),2)
 				end
 			end
 		end
@@ -357,7 +357,8 @@ function Rubim.ttd(unit)
 	end
 end	
 
---GROUND SPELLS
+-- These wont work since we no longer have the global
+--[[GROUND SPELLS
 function Rubim.CreateMacro()
 	if select(3,UnitClass("player")) == 12 then
 		CreateMacro("Infernal Strike", "ABILITY_DEMONHUNTER_INFERNALSTRIKE1", "#showtooltip Infernal Strike\n/run Rubim.GroundSpell('189110')", 1)
@@ -374,7 +375,7 @@ function Rubim.CreateMacro()
 	if select(3,UnitClass("player")) == 6 then
 		CreateMacro("DnD", "SPELL_SHADOW_DEATHANDDECAY", "#showtooltip Death and Decay\n/run Rubim.GroundSpell(43265)", 1)
 	end
-end
+end]]
 
 function Rubim.CastGroundSpell()
 	if UnitAffectingCombat('player') == false and NeP.DSL:Get('movingfor')('player',0.1) == false then return false end
@@ -519,11 +520,11 @@ function Rubim.IcyTalons()
 	else
 		ITTimer = select(7,UnitBuff("player", GetSpellInfo(194878))) - GetTime()
 	end
-	return ITTimer >= Rubim.CDCheck(61304)
+	return ITTimer >= self.CDCheck(61304)
 end
 
 function Rubim.SR()
-	return Rubim.CDCheck(130736) >= 4
+	return self.CDCheck(130736) >= 4
 end
 
 function Rubim.DelayStagger()
