@@ -4,9 +4,9 @@
 --/dump NeP.DSL:Get('areattd')('player')
 --/dump NeP.DSL:Get('area')('player')
 --/dump NeP.DSL:Get('movingfor')('player')
---/dump NeP.DSL:Get('allstacked')('player')
+--/dump NeP.DSL:Get('blood.rotation')('player')
 --isin
---/dump NeP.DSL:Get('isdummy')('target')
+--/dump NeP.DSL:Get('onmeele')('player')
 ----actions+=/hamstring,if=buff.battle_cry_deadly_calm.remains>cooldown.hamstring.remains
 
 
@@ -14,6 +14,11 @@
 NeP.DSL:Register('rotation', function(rotation)
 	if rotation == NeP.Library:Fetch('Rubim').BloodMaster() then return true end
 	return false
+end)
+
+NeP.DSL:Register('onmeele', function(rotation)
+	local isitokay = NeP.Library:Fetch('Rubim').MeeleRange()
+	return isitokay
 end)
 
 NeP.DSL:Register('blood.rotation', function(target, rotation)
@@ -35,7 +40,7 @@ NeP.DSL:Register("rubimarea.enemies", function(unit, distance)
 	if UnitExists(unit) then
 		for GUID, Obj in pairs(NeP.OM:Get('Enemy')) do
 			if UnitExists(Obj.key) and UnitHealth(Obj.key) > 0 and not UnitIsDeadOrGhost(Obj.key)
-			and (UnitAffectingCombat(Obj.key) or NeP.DSL:Get('isdummy')(Obj.id))
+			and (UnitAffectingCombat(Obj.key) or NeP.DSL:Get('isdummy')(Obj.key))
 			and (NeP.Protected.Distance(unit, Obj.key) <= tonumber(distance)) then
 				total = total +1
 			end
@@ -51,10 +56,10 @@ NeP.DSL:Register("areattd", function(target)
 	local ttd = 0
 	local total = 0
 	for GUID, Obj in pairs(NeP.OM:Get('Enemy')) do
-		if Obj.distance <= 7 and (UnitAffectingCombat(Obj.id) or Obj.is == 'dummy') then
-			if NeP.DSL:Get("deathin")(Obj.id) < 8 then
+		if NeP.Protected.Distance("player", Obj.key) <= tonumber(8) and (UnitAffectingCombat(Obj.key) or NeP.DSL:Get('isdummy')(Obj.key)) then
+			if NeP.DSL:Get("deathin")(Obj.key) < 8 then
 				total = total+1
-				ttd = NeP.DSL:Get("deathin")(Obj.id) + ttd
+				ttd = NeP.DSL:Get("deathin")(Obj.key) + ttd
 			end
 		end
 	end
