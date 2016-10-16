@@ -46,8 +46,8 @@ local build = {
 --actions.build+=/pistol_shot,if=combo_points.deficit>=1+buff.broadsides.up&buff.opportunity.up&energy.time_to_max>2-talent.quick_draw.enabled
 	{'Pistol Shot', {'player.buff(Opportunity)', 'player.combodeficit >= 1' }},	
 --actions.build+=/saber_slash,if=variable.ss_useable
-	{'Saber Slash', {'player.energy >= 50', 'player.combopoints < 5'}},
-	{'Saber Slash', {'player.energy >= 50', 'player.combopoints < 5'}},
+	{'Saber Slash', 'player.combopoints < 5'},
+	{'Saber Slash', 'player.combopoints < 5'},
 }
 
 local finish = {
@@ -56,8 +56,8 @@ local finish = {
 --actions.finish=between_the_eyes,if=equipped.greenskins_waterlogged_wristcuffs&buff.shark_infested_waters.up
 	{'Between the Eyes', {'player.combopoints >= 5', 'player.buff(Shark Infested Waters)'}},
 --actions.finish+=/run_through,if=!talent.death_from_above.enabled|energy.time_to_max<cooldown.death_from_above.remains+3.5
-	{'Run Through', {'player.combopoints >= 5', '!player.talent(7,3)'}},
-	{'Run Through', {'player.combopoints >= 5', 'player.talent(7,3)'}},
+	--{'Run Through', {'player.combopoints >= 5', '!player.talent(7,3)'}},
+	{'Run Through', 'player.combopoints >= 5'},
 }
 
 local bf = {
@@ -95,13 +95,13 @@ local inCombat = {
 --variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&(rtb_buffs<=1&!rtb_list.any.6&((!buff.curse_of_the_dreadblades.up&!buff.adrenaline_rush.up)|!rtb_list.any.5))
 --***WORKS	{'Roll the Bones', {'!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or','!player.talent(7,1)', 'player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)' }},
 	--{'Roll the Bones', {'player.spell(Curse of the Dreadblades', '!player.buff(Broadsides)'}},
-	{'Roll the Bones', {'!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or','!player.talent(7,1)', 'player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or','!player.talent(7,1)', '!player.buff(Broadsides)', 'player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', 'player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', 'player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', 'player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', 'player.buff(Buried Treasure)' }},
+	{'Roll the Bones', {'!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.buff(Adrenaline Rush)', '!player.buff(Curse of the Dreadblades)', '!player.talent(7,1)', 'player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.buff(Adrenaline Rush)', '!player.buff(Curse of the Dreadblades)', '!player.talent(7,1)', '!player.buff(Broadsides)', 'player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.buff(Adrenaline Rush)', '!player.buff(Curse of the Dreadblades)', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', 'player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.buff(Adrenaline Rush)', '!player.buff(Curse of the Dreadblades)', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', 'player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.buff(Adrenaline Rush)', '!player.buff(Curse of the Dreadblades)', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', 'player.buff(True Bearing)', '!player.buff(Buried Treasure)', 'or', '!player.buff(Adrenaline Rush)', '!player.buff(Curse of the Dreadblades)', '!player.talent(7,1)', '!player.buff(Broadsides)', '!player.buff(Jolly Roger)', '!player.buff(Grand Melee)', '!player.buff(Shark Infested Waters)', '!player.buff(True Bearing)', 'player.buff(Buried Treasure)'}},
 --variable,name=ss_useable_noreroll,value=(combo_points<5+talent.deeper_stratagem.enabled-(buff.broadsides.up|buff.jolly_roger.up)-(talent.alacrity.enabled&buff.alacrity.stack<=4))
 --variable,name=ss_useable,value=(talent.anticipation.enabled&combo_points<4)|(!talent.anticipation.enabled&((variable.rtb_reroll&combo_points<4+talent.deeper_stratagem.enabled)|(!variable.rtb_reroll&variable.ss_useable_noreroll)))
 --call_action_list,name=bf
 	{ bf },
 --call_action_list,name=cds
-	{ cds },
+	{ cds, 'toggle(cooldowns)'},
 --call_action_list,name=stealth,if=stealthed|cooldown.vanish.up|cooldown.shadowmeld.up
 --death_from_above,if=energy.time_to_max>2&!variable.ss_useable_noreroll
 --slice_and_dice,if=!variable.ss_useable&buff.slice_and_dice.remains<target.time_to_die&buff.slice_and_dice.remains<(1+combo_points)*1.8
@@ -120,7 +120,7 @@ local outCombat = {
 	{Shared}
 }
 
-NeP.CR:Add(260, 'Rubim (WIP) Rogue - Outlaw', {
+NeP.CR:Add(260, 'WinnerRubim (WIP) Rogue - Outlaw', {
 		{'%pause', 'player.channeling'},
 		{Shared},
 		{Interrupts, 'target.interruptAt(24)'},
