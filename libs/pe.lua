@@ -5,10 +5,17 @@
 --/dump NeP.DSL:Get('area')('player')
 --/dump NeP.DSL:Get('movingfor')('player')
 --/dump NeP.DSL:Get('blood.rotation')('player')
---isin
+--incdmg
+--/dump NeP.DSL:Get('incdmg')('player')
 --/dump NeP.DSL:Get('onmelee')('player')
 ----actions+=/hamstring,if=buff.battle_cry_deadly_calm.remains>cooldown.hamstring.remains
 
+
+--COPYPASTE from Xeer
+--/dump NeP.DSL:Get('prev_gcd')('player', 'Thrash')
+NeP.DSL:Register('prev_gcd', function(_, Spell)
+	return NeP.DSL:Get('lastcast')('player', Spell)
+end)
 
 --FUCK YEAH Gabbzz!
 NeP.DSL:Register('rotation', function(rotation)
@@ -30,26 +37,13 @@ NeP.DSL:Register('rpdeficiet', function(target)
 	return (UnitPowerMax(target, SPELL_POWER_RUNIC_POWER)) - (UnitPower(target, SPELL_POWER_RUNIC_POWER))
 end)
 
-NeP.DSL:Register('rprint', function(text)
-	print(text)
+--/dump NeP.DSL:Get('rage.deficit')()
+NeP.DSL:Register('rage.deficit', function()
+	return (UnitPowerMax('player')) - (UnitPower('player'))
 end)
 
-NeP.DSL:Register("rubimarea.enemies", function(unit, distance)
-	local total = 0
-	local distance = tonumber(distance)
-	if UnitExists(unit) then
-		for GUID, Obj in pairs(NeP.OM:Get('Enemy')) do
-			if UnitExists(Obj.key) and UnitHealth(Obj.key) > 0 and not UnitIsDeadOrGhost(Obj.key)
-			and (UnitAffectingCombat(Obj.key) or NeP.DSL:Get('isdummy')(Obj.key))
-			and (NeP.Protected.Distance(unit, Obj.key) <= tonumber(distance)) then
-				total = total +1
-			end
-		end
-	end
-	if total == 0 and UnitExists('target') and UnitHealth('target') > 0 and IsSpellInRange(GetSpellInfo(meleeSpell), "target") == 1 then
-		total = 1
-	end
-	return total
+NeP.DSL:Register('rprint', function(text)
+	print(text)
 end)
 
 NeP.DSL:Register("areattd", function(target)
